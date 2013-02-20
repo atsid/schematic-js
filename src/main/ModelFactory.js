@@ -201,7 +201,7 @@ define([
         this.getModelBySchema = function (schema, obj) {
             var model;
             logger.debug("Getting new model with schema ID: " + schema.id);
-            if (BackboneModel) {
+            if (typeof BackboneModel === "function") {
                 model = new BackboneModel(obj, {
                     validate: true,
                     'schema': schema
@@ -235,7 +235,7 @@ define([
          * @return the loaded schema.
          */
         this.getSchema = function (name) {
-            var schema, refResolver = new SchemaResolver();
+            var schema, refResolver = new SchemaResolver(this.resolvers);
             this.resolvers.some(function (res) {
                 schema = res(name);
                 return schema;
