@@ -1,10 +1,20 @@
+/**
+ * @class SchemaResolver
+ * Class exposing a method to resolve schema references to schema objects in a
+ * schema.
+ */
 define([
 ], function (
 ) {
     return function(resolvers) {
 
-        //similar to dojox.json.ref.resolveJson, but doesn't get hung up on circular references
-
+        /**
+         * Given the passed subobject walk its properties looking for $refs and
+         * replace them with the loaded schema.
+         * @param subobj - object to walk
+         * @param parent - parent of object if the $ref needs to be replaced.
+         * @param parentKey - key to replace $ref, if found.
+         */
         this.resolveRefs = function (subobj, parent, parentKey) {
             if (!(subobj.tag && subobj.tag.resolved)) {
                 Object.keys(subobj).forEach(function (key, idx, obj) {

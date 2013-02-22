@@ -1,3 +1,7 @@
+/**
+ * @class ModelFactory
+ * Factory for creating schema based models.
+ */
 define([
     "./Logger",
     "./SchemaResolver",

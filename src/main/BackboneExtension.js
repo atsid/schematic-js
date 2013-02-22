@@ -28,6 +28,13 @@ define([
 
             },
 
+            /**
+             * Override Backbone model validation method to do valiation
+             * based on JSON Schema.
+             * @param attributes - specific attributes to validate
+             * @param options
+             * @return error object
+             */
             validate: function (attributes, options) {
                 // apply attributes to a temporary model because schema
                 // validation needs to apply to the whole model.
