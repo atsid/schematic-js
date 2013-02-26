@@ -20,14 +20,14 @@ require([
     // Create a model factory.
     var mfact = new ModelFactory({
             // "resolver" is used by the factory to find schemas based on names.
-            // resolve schema by mapping it to the dependency where it was already loaded.
+            // Resolve schema by mapping it to the dependency where it was already loaded.
             resolver: function (name) {
                 if (name === "schema/ExampleSchema") {
                     return ExampleSchema;
                 }
             }
         }),
-        // Create a model based on the schema
+        // Create a model based on the example schema.
         model = mfact.getModel("schema/ExampleSchema"),
         msg = document.getElementsByName("message")[0],
         btn = document.getElementsByName("Increment")[0];
