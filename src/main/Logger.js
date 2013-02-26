@@ -1,12 +1,12 @@
+/**
+ * @class Logger
+ * @extends Object
+ * A minimal logger for schematic. Provides methods for trace(), debug(), info(), warn() and error().
+ * @param {String} logLevel Supported levels are TRACE, DEBUG, INFO, WARN, ERROR
+ */
 define([
 ], function () {
 
-    /**
-     * @class Logger
-     * @extends Object
-     * Logger for bullhorn. Provides methods for trace(), debug(), info(), warn() and error().
-     * @param {String} logLevel Supported levels are TRACE, DEBUG, INFO, WARN, ERROR
-     */
     return function (logLevel, alternateConsole, srcName) {
 
         /**

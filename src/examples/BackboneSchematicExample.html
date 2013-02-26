@@ -1,0 +1,77 @@
+<!--
+Simple Sample page to demonstrate the use of a schema validated backbone model.
+It provides a button that increments a model property which will fail after it reaches 10 due to a schema
+restriction.
+It is intended to be loaded directly from the file system in this directory.
+Most of the code is setting up AMD (which becomes negligible in larger projects).
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    Include with script tags because backbone does not use AMD.
+    -->
+    <script src="./require.js"></script>
+    <script src="./underscore.js"></script>
+    <script src="./backbone.js"></script>
+    <script>
+        // Configure AMD to find things.
+        var path = location.pathname.replace(/\/[^/]+$/, '');
+        require.config({
+            baseUrl: "./",
+            paths: {
+                schematic: "../main", // schematic-js code
+                schema: "schema", // the example schema
+                example: "."
+            },
+            // remap to use a third party validator.
+            map: {
+                "*": {
+                    "schematic/Validator": "example/Validator"
+                }
+            }
+        });
+    </script>
+    <script>
+        // Use AMD to define and load the resources we depend on.
+        require([
+            "schematic/ModelFactory",
+            "schema/ExampleSchema"
+        ], function (
+                ModelFactory,
+                ExampleSchema
+        ) {
+            // Create a model factory.
+            var mfact = new ModelFactory({
+                    // "resolver" is used by the factory to find schemas based on names.
+                    // resolve schema by mapping it to the dependency where it was already loaded.
+                    resolver: function (name) {
+                        if (name === "schema/ExampleSchema") {
+                            return ExampleSchema;
+                        }
+                    }
+                }),
+                // Create a model based on the Example schema.
+                model = mfact.getModel("schema/ExampleSchema"),
+                msg = document.getElementsByName("message")[0],
+                btn = document.getElementsByName("Increment")[0];
+
+            model.num = 1;
+            // update the model.
+            // Should fail after 10, because the schema defines a maximum of 10 for the num property.
+            btn.onclick = function (evt) {
+                model.num = model.num + 1;
+                msg.innerHTML = "Model.num equals " + model.num;
+            }
+
+         });
+    </script>
+
+</head>
+<body>
+
+<button name="Increment">Increment</button>
+<div name="message">Click button to increment model.</div>
+
+</body>
+</html>

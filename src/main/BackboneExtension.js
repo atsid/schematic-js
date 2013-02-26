@@ -1,3 +1,7 @@
+/**
+ * A module that modifies the Backbone global if it exists to add a Backbone.SchematicModel
+ * that extends Backbone.Model and adds json schema support.
+ */
 define([
     "./Validator"
 ], function (
@@ -12,7 +16,7 @@ define([
                 var that = this,
                     schema = this.jsonschema = (options && options.schema);
                 /*
-                 * Define known properties that delegate to get and set.
+                 * Define known properties based on the schema that delegate to get and set.
                  */
                 Object.keys(schema && schema.properties).forEach(function (val, idx, obj) {
                     Object.defineProperty(that, val, {

@@ -1,6 +1,7 @@
 /**
  * @class ModelFactory
- * Factory for creating schema based models.
+ * Factory for creating schema-based models. If Backbone exists, the factory
+ * will create a schema-based Backbone model.
  */
 define([
     "./Logger",
