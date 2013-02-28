@@ -29,7 +29,7 @@ define([
                             this.resolveRefs(value, subobj, key);
                         }
                         parent[parentKey] = value;
-                    } else if (typeof val === "object") {
+                    } else if (typeof val === "object" && !val.resolved) {
                         this.resolveRefs(val, subobj, key);
                     }
 
