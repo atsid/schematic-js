@@ -1,7 +1,7 @@
 //     Backbone.js 0.9.10
 
 //     (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
-//     Backbone may be freely distributed under the MIT license.
+//     Backbone may be freely distributed under the MIT LICENSE.
 //     For all details and documentation:
 //     http://backbonejs.org
 

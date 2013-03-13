@@ -48,3 +48,6 @@ require([
 The current version of Schematic-js relies on third party validators to supply JSONSchema validation. The examples use a reference implementation from json-schema (https://github.com/kriszyp/json-schema.git), but other validators can easily be injected via AMD's module mapping.
 ### Backbone
 The library provides backbone (https://github.com/documentcloud/backbone.git) integration by creating a Backbone.SchematicModel that extends Backbone.Model. SchematicModel implements validation and adds property definitions defined on the schema to the model.
+
+##License
+This software is licensed under the Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2.0).
