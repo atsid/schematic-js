@@ -17,6 +17,7 @@ define([
 
     return function (config) {
         var thisFactory = this,
+            onchanges = {},
         // internal model wrapper class.
             ModelWrapper = function (schema, obj) {
 
@@ -74,7 +75,9 @@ define([
                                 logger.debug("Value is an integer, checking if property type is integer..");
                                 success = property.type === "integer";
                             } else if (!noThrow) {
-                                throw new Error("Expected '" + (property.schemaId || property.type) + "' but received '" + (value.schemaId || typeof value) + "' for ModelObject '" + schema.id + "'");
+                                throw new Error("Expected '" + (property.schemaId || property.type) +
+                                    "' but received '" + (value.schemaId || typeof value) +
+                                    "' for ModelObject '" + schema.id + "'");
                             }
                         }
 
@@ -118,9 +121,19 @@ define([
                  */
                 this.set = function (prop, value) {
                     if (_isValidSet(prop, value)) {
+                        onchanges[prop] && onchanges[prop].forEach(function (val, idx, obj) {
+                            val(_data[prop], value);
+                        });
                         _data[prop] = value;
                         return true;
                     }
+                };
+
+                this.onChange = function (field, callback) {
+                    if (!onchanges[field]) {
+                        onchanges[field] = [];
+                    }
+                    onchanges[field].push(callback);
                 };
 
                 /*
@@ -209,7 +222,8 @@ define([
             if (typeof BackboneModel === "function") {
                 model = new BackboneModel(obj, {
                     validate: true,
-                    'schema': schema
+                    'schema': schema,
+                    serviceFactory: this.config.serviceFactory
                 });
             } else {
                 model = new ModelWrapper(schema, obj);
