@@ -62,23 +62,7 @@ define([
 
                         logger.debug("Checking if property: " + prop + " is valid to set");
                         if (_isValidProperty(prop, noThrow)) {
-                            if (value.schemaId) {//another model object
-                                logger.debug("The value has a defined schema ID: " + value.schemaId);
-                                success = value.schemaId === property.schemaId;
-                            } else if (typeof value === property.type) {                                    //string/boolean/number
-                                logger.debug("The value matches property type: " + property.type);
-                                success = true;
-                            } else if (typeof value === "object") {                                         //array
-                                logger.debug("Value is an object, checking if type is array...");
-                                success = value.length && property.type === "array";
-                            } else if (typeof value === "number" && value % 1 === 0) {                      //integer
-                                logger.debug("Value is an integer, checking if property type is integer..");
-                                success = property.type === "integer";
-                            } else if (!noThrow) {
-                                throw new Error("Expected '" + (property.schemaId || property.type) +
-                                    "' but received '" + (value.schemaId || typeof value) +
-                                    "' for ModelObject '" + schema.id + "'");
-                            }
+                            success = true;
                         }
 
                         return success;
