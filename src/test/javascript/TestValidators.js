@@ -1,10 +1,12 @@
 require([
     "schematic/ModelFactory",
     "schematic/plugins/SchemaValidationPlugin",
+    "schematic/plugins/LuhnValidationPlugin",
     "TestData/SimpleTestModelSchema"
 ], function (
     ModelFactory,
     SchemaValidationPlugin,
+    LuhnValidationPlugin,
     SimpleTestModelSchema
 ) {
         var b;
@@ -55,8 +57,26 @@ require([
                 model.modelNumber = "";
                 assertEquals(model.modelNumber, "12345");
                 assertEquals(model.lastErrors.length, 1);
+            },
+
+            //Test the LuhnValidationPlugin
+            testLuhnValidationPlugin: function () {
+                var model;
+                this.factory.addValidator(
+                    new LuhnValidationPlugin({
+                            propertyPattern: /.*/,
+                            modelPattern: /.*/
+                        }
+                    ));
+                model = this.factory.getModel(SimpleTestModelSchema);
+                // should succeed.
+                model.creditCardNumber = "4111111111111111";
+                assertEquals(model.creditCardNumber, "4111111111111111");
+                // should not succeed because credit card number is not valid
+                model.creditCardNumber = "1234123412341234";
+                assertEquals(model.creditCardNumber, "4111111111111111");
+                assertEquals(model.lastErrors.length, 1);
             }
-            
         });
     
     });

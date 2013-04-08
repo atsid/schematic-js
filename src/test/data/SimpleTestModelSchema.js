@@ -14,6 +14,11 @@ define({
         "optionalprop": {
             "type": "string",
             "description": "an optional property."
+        },
+        "creditCardNumber": {
+            "type": "string",
+            "description": "Credit Debit Card Number",
+            "required": true
         }
     }
 });
