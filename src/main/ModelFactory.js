@@ -32,6 +32,7 @@ define([
 
                 var basedOn = obj, _data = obj || {}, that = this, i, getF, setF,
                     lastErrors,
+                    propertyCache = {},
                     onchanges = {},
                 /*
                  * Validate a .get() call. Ensures requested property is in the schema.
@@ -44,7 +45,7 @@ define([
                     _isValidProperty = function (prop, noThrow) {
 
                         var success = false;
-                        if (schema.properties[prop]) {
+                        if (propertyCache[prop]) {
                             logger.debug("schema: " + schema.id + " contains property: " + prop);
                             success = true;
                         } else {
@@ -68,7 +69,7 @@ define([
                  */
                     _isValidSet = function (prop, value, noThrow) {
 
-                        var property = schema.properties[prop],
+                        var property = propertyCache[prop],
                             lastError,
                             failure = true;
 
@@ -85,7 +86,23 @@ define([
                         }
 
                         return !failure;
+                    },
+                    cacheProperties = function(schema, cache) {
+                        for (prop in schema.properties) {
+                            cache[prop] = schema.properties[prop];
+                        };
+                    },
+                    walkExtends = function (schema, operation) {
+                        if (schema.extends) {
+                            walkExtends(schema.extends, operation);
+                        }
+                        operation(schema);
                     };
+
+                // cache properties from all schemas.
+                walkExtends(schema, function (schema) {
+                    cacheProperties(schema, propertyCache);
+                });
 
                 /*
                  * Takes id from schema
@@ -113,7 +130,7 @@ define([
                  * @return value for property
                  */
                 this.get = function (prop) {
-                    var ret, property = schema.properties[prop];
+                    var ret, property = propertyCache[prop];
                     if (_isValidProperty(prop)) {
                         if (property.type === "array" && basedOn) {
                             ret = [];
@@ -189,7 +206,7 @@ define([
                 /*
                  * Define known properties that delegate to get and set.
                  */
-                Object.keys(schema.properties).forEach(function (val, idx, obj) {
+                Object.keys(propertyCache).forEach(function (val, idx, obj) {
                     Object.defineProperty(that, val, {
                         get: function () {
                             return that.get(val);

@@ -1,6 +1,6 @@
-require(["schematic/ModelFactory", "TestData/SimpleTestModelSchema"],
-        function (ModelFactory, SimpleTestModelSchema) {
-    
+require(["schematic/ModelFactory", "TestData/SimpleTestModelSchema", "TestData/ExtendedSchema", "TestData/BaseSchema"],
+        function (ModelFactory, SimpleTestModelSchema, ExtendedSchema, BaseSchema) {
+
         var b;
     
         /**
@@ -77,8 +77,30 @@ require(["schematic/ModelFactory", "TestData/SimpleTestModelSchema"],
     
                 serialized = JSON.stringify(this.model);
                 assertEquals("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\"}", serialized);
+            },
+
+            // Test extended Models.
+            testExtension: function () {
+                var factory = new ModelFactory({
+                   resolver: function (name) {
+                       if (name.indexOf("ExtendedSchema") > -1) {
+                           return ExtendedSchema;
+                       } else {
+                           return BaseSchema;
+                       }
+                   }
+                }),
+                extendedModel = factory.getModelByName("ExtendedSchema");
+
+                extendedModel.modelNumber = "1234";
+                assertEquals("1234", extendedModel.modelNumber);
+                extendedModel.optionalprop = "optional";
+                assertEquals("optional", extendedModel.optionalprop);
+                extendedModel.explanation = "explanation";
+                assertEquals("explanation", extendedModel.explanation);
+                extendedModel.comment = "comment";
+                assertEquals("comment", extendedModel.comment);
             }
-    
         });
-    
-    });
+
+});
