@@ -54,7 +54,30 @@ require(["schematic/ModelFactory", "TestData/SimpleTestModelSchema", "schematic/
                 this.model.modelNumber = "55555";
                 assertNotEquals("55555", this.model.modelNumber);
 
+            },
+
+            testBackboneModelServiceSupport: function () {
+                var success = true;
+
+                // should be able to get and set all attributes that are in the
+                // schema.
+                this.model.set("modelNumber", "1111");
+                assertEquals("1111", this.model.get("modelNumber"));
+                assertEquals("1111", this.model.modelNumber);
+
+                this.model.modelNumber = "2222";
+                assertEquals("2222", this.model.get("modelNumber"));
+                assertEquals("2222", this.model.modelNumber);
+
+                this.model.set("optionalprop", "optional");
+                assertEquals("optional", this.model.get("optionalprop"));
+                assertEquals("optional", this.model.optionalprop);
+
+                // should be able to save...
+                success = this.model.save({"noattr": "shouldntset"}, {
+                    validate: true
+                });
+                assertTrue(success);
             }
         });
-    
-    });
+});

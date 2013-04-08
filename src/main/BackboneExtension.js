@@ -7,9 +7,18 @@ define([
 ], function (
     Validator
 ) {
-    var ret;
-    // Add a schema-supported backbone model.
+    var ret, sync;
+    // Add a schema-supported backbone model.1234567qwertyuasdfghjzxcvbn
     if (typeof (Backbone) !== 'undefined') {
+        sync = Backbone.sync;
+        Backbone.sync = function (method, model, options) {
+            if (model instanceof Backbone.SchematicModel) {
+                console.log(method + " : " + model + " : " + options);
+            } else {
+                return sync(method, model, options);
+            }
+        };
+
         Backbone.SchematicModel = Backbone.Model.extend({
 
             initialize: function (attributes, options) {

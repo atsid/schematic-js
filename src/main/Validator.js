@@ -3,8 +3,7 @@ define([
 
     /**
      * Validation function for use with schematic. The module can be remapped
-     * to a custom validator. The method returns an error object. This default
-     * implementation does no validation and returns true.
+     * to a custom validator. The method returns an error object.
      *
      * @param schema the schema to validate against.
      * @param instance the instance to validate.
