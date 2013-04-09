@@ -69,11 +69,18 @@ require([
                         }
                     ));
                 model = this.factory.getModel(SimpleTestModelSchema);
+
                 // should succeed.
                 model.creditCardNumber = "4111111111111111";
                 assertEquals(model.creditCardNumber, "4111111111111111");
-                // should not succeed because credit card number is not valid
+
+                // should not succeed because credit card number does not pass the Luhn test
                 model.creditCardNumber = "1234123412341234";
+                assertEquals(model.creditCardNumber, "4111111111111111");
+                assertEquals(model.lastErrors.length, 1);
+
+                // should not succeed because credit card number is not numeric
+                model.creditCardNumber = "abcd";
                 assertEquals(model.creditCardNumber, "4111111111111111");
                 assertEquals(model.lastErrors.length, 1);
             }

@@ -18,7 +18,7 @@ define([
                 i,
                 digit;
 
-            if (value) {
+            if (value && isNumeric(value)) {
                 for(i = 0; i < numdigits; i += 1) {
                     digit = parseInt(value.charAt(i));
                     if(i % 2 == parity) digit *= 2;
@@ -30,8 +30,14 @@ define([
                 if ((sum % 10) != 0) {
                     ret.push("Property " + property + " is invalid");
                 }
+            } else {
+                ret.push("Property " + property + " is invalid");
             }
             return ret.length ? ret : undefined;
+        }
+
+        function isNumeric (n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
         }
     };
     return module;
