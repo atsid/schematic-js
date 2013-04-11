@@ -8,7 +8,12 @@ define([
     util
     ) {
     var module = function (config) {
+        this.message = {code: 0, message: "Invalid number"};
         util.mixin(this, config);
+
+        function isNumeric(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
 
         this.validate = function (property, instance, newValue, schema) {
             var ret = [], value = newValue || instance[property],
@@ -19,10 +24,12 @@ define([
                 digit;
 
             if (value && isNumeric(value)) {
-                for(i = 0; i < numdigits; i += 1) {
-                    digit = parseInt(value.charAt(i));
-                    if(i % 2 == parity) digit *= 2;
-                    if(digit > 9) {
+                for (i = 0; i < numdigits; i += 1) {
+                    digit = parseInt(value.charAt(i), 10);
+                    if (i % 2 === parity) {
+                        digit *= 2;
+                    }
+                    if (digit > 9) {
                         digit -= 9;
                     }
                     sum += digit;
@@ -31,13 +38,9 @@ define([
                     ret.push(this.message);
                 }
             } else {
-                ret.push("Property " + property + " is invalid");
+                ret.push(this.message);
             }
             return ret.length ? ret : undefined;
-        }
-
-        function isNumeric (n) {
-            return !isNaN(parseFloat(n)) && isFinite(n);
         };
     };
     return module;
