@@ -1,6 +1,9 @@
 /**
  * @class schematic-js/SchemaValidationPlugin
  * Plugin to selectively validate properties against a json schema.
+ * {
+ *    requiredMessage: {code:123, message: "Field required");
+ * }
  */
 define([
     "../util"
@@ -8,6 +11,7 @@ define([
     util
      ) {
     var module = function (config) {
+        this.requiredMessage = {code: 0, message: "Field is required."};
         util.mixin(this, config);
 
         this.validate = function (property, instance, newValue, schema) {
@@ -17,11 +21,11 @@ define([
             if (schemaProp) {
                 // require check
                 if (schemaProp.required && !value) {
-                    ret.push("Property " + property + " is require");
+                    ret.push(this.requiredMessage);
                 }
             }
             return ret.length ? ret : undefined;
-        }
+        };
     };
     return module;
 });

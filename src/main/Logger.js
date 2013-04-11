@@ -26,7 +26,7 @@ define([
             alternateConsole = console;
         }
 
-        if (typeof (srcName) === 'undefined') {
+        if (typeof srcName === 'undefined') {
             srcName = '';
         }
 

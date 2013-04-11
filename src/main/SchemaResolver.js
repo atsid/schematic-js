@@ -6,7 +6,7 @@
 define([
 ], function (
 ) {
-    return function(resolvers) {
+    return function (resolvers) {
 
         /**
          * Given the passed subobject walk its properties looking for $refs and
@@ -35,6 +35,6 @@ define([
 
                 }, this);
             }
-        }
+        };
     };
 });

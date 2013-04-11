@@ -6,8 +6,9 @@ define([
     "../util"
 ], function (
     util
-    ) {
+) {
     var module = function (config) {
+        this.message = {code: 0, message: "Property failed Luhn validation."};
         util.mixin(this, config);
 
         this.validate = function (property, instance, newValue, schema) {
@@ -19,16 +20,18 @@ define([
                 digit;
 
             if (value) {
-                for(i = 0; i < numdigits; i += 1) {
+                for (i = 0; i < numdigits; i += 1) {
                     digit = parseInt(value.charAt(i));
-                    if(i % 2 == parity) digit *= 2;
-                    if(digit > 9) {
+                    if (i % 2 === parity) {
+                        digit *= 2;
+                    }
+                    if (digit > 9) {
                         digit -= 9;
                     }
                     sum += digit;
                 }
-                if ((sum % 10) != 0) {
-                    ret.push("Property " + property + " is invalid");
+                if ((sum % 10) !== 0) {
+                    ret.push(this.message);
                 }
             }
             return ret.length ? ret : undefined;

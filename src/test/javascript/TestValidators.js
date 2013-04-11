@@ -2,11 +2,13 @@ require([
     "schematic/ModelFactory",
     "schematic/plugins/SchemaValidationPlugin",
     "schematic/plugins/LuhnValidationPlugin",
+    "schematic/plugins/RegExpValidationPlugin",
     "TestData/SimpleTestModelSchema"
 ], function (
     ModelFactory,
     SchemaValidationPlugin,
     LuhnValidationPlugin,
+    RegExpValidationPlugin,
     SimpleTestModelSchema
 ) {
         var b;
@@ -57,6 +59,8 @@ require([
                 model.modelNumber = "";
                 assertEquals(model.modelNumber, "12345");
                 assertEquals(model.lastErrors.length, 1);
+                // test validate method direclty
+                assertEquals(1, model.validate("modelNumber", "").length);
             },
 
             //Test the LuhnValidationPlugin
@@ -76,6 +80,28 @@ require([
                 model.creditCardNumber = "1234123412341234";
                 assertEquals(model.creditCardNumber, "4111111111111111");
                 assertEquals(model.lastErrors.length, 1);
+            },
+
+            //Test the RegexpValidationPlugin
+            testRegexpValidationPlugin: function () {
+                var model, ret;
+                this.factory.addValidator(
+                    new RegExpValidationPlugin({
+                            propertyPattern: /.*/,
+                            modelPattern: /.*/,
+                            pattern: /^[\d]*$/,
+                            message: {code: 12345, message: "failed."}
+                        }
+                    ));
+                model = this.factory.getModel(SimpleTestModelSchema);
+                // should succeed.
+                ret = model.validate("creditCardNumber", "1234567");
+                assertUndefined(ret);
+
+                // should not succeed because credit card number is not valid
+                ret = model.validate("creditCardNumber", "1234567A");
+                assertNotUndefined(ret);
+                assertEquals(12345, ret[0].code);
             }
         });
     

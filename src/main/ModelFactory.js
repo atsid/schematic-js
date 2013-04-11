@@ -4,19 +4,18 @@
  * will create a schema-based Backbone model.
  */
 define([
-    "./Logger",
+    "./log",
     "./SchemaResolver",
     "./BackboneExtension"
 ], function (
-    Logger,
+    logger,
     SchemaResolver,
     BackboneModel
 ) {
 
-    var logger = new Logger("debug");
-
     return function (config) {
         var thisFactory = this,
+            validators = [],
             pertinentValidators = function (name) {
                 var ret = [];
                 validators.forEach(function (val) {
@@ -26,11 +25,10 @@ define([
                 });
                 return ret;
             },
-            validators = [],
         // internal model wrapper class.
             ModelWrapper = function (schema, obj, validators) {
 
-                var basedOn = obj, _data = obj || {}, that = this, i, getF, setF,
+                var basedOn = obj, data = obj || {}, that = this,
                     lastErrors,
                     propertyCache = {},
                     onchanges = {},
@@ -42,7 +40,7 @@ define([
                  * @throws Property not defined exception
                  * @private
                  */
-                    _isValidProperty = function (prop, noThrow) {
+                    isValidProperty = function (prop, noThrow) {
 
                         var success = false;
                         if (propertyCache[prop]) {
@@ -67,7 +65,7 @@ define([
                  * @throws Invalid type
                  * @private
                  */
-                    _isValidSet = function (prop, value, noThrow) {
+                    isValidSet = function (prop, value, noThrow) {
 
                         var property = propertyCache[prop],
                             lastError,
@@ -75,7 +73,7 @@ define([
 
                         logger.debug("Checking if property: " + prop + " is valid to set");
                         // run through validators stopping at first failure
-                        if (_isValidProperty(prop, noThrow)) {
+                        if (isValidProperty(prop, noThrow)) {
                             failure = validators.some(function (val, idx, arr) {
                                 if (val.propertyPattern.test(property)) {
                                     lastError = val.validate(prop, this, value, schema);
@@ -87,14 +85,14 @@ define([
 
                         return !failure;
                     },
-                    cacheProperties = function(schema, cache) {
-                        for (prop in schema.properties) {
+                    cacheProperties = function (schema, cache) {
+                        Object.keys(schema.properties).forEach(function (prop) {
                             cache[prop] = schema.properties[prop];
-                        };
+                        });
                     },
                     walkExtends = function (schema, operation) {
-                        if (schema.extends) {
-                            walkExtends(schema.extends, operation);
+                        if (schema["extends"]) {
+                            walkExtends(schema["extends"], operation);
                         }
                         operation(schema);
                     };
@@ -124,6 +122,22 @@ define([
                     enumerable: false
                 });
 
+                /**
+                 * Expose validation function.
+                 * @param prop - the name of the property to set
+                 * @param value - possible value.
+                 * @returns set of errors or undefined
+                 */
+                this.validate = function (prop, value) {
+                    var ret,
+                        success = isValidSet(prop, value, true);
+
+                    if (!success) {
+                        ret = lastErrors;
+                    }
+                    return ret;
+                };
+
                 /*
                  * Returns value for requested property
                  * @param string Property name
@@ -131,17 +145,17 @@ define([
                  */
                 this.get = function (prop) {
                     var ret, property = propertyCache[prop];
-                    if (_isValidProperty(prop)) {
+                    if (isValidProperty(prop)) {
                         if (property.type === "array" && basedOn) {
                             ret = [];
-                            _data[prop].forEach(function (obj, idx) {
+                            data[prop].forEach(function (obj, idx) {
                                 if (obj) {
                                     ret.push(thisFactory.getModel(property.items, obj));
                                 }
                             }, this);
                         } else {
-                            if (_data[prop]) {
-                                ret = (basedOn && property.type === "object" ? thisFactory.getModel(property, _data[prop]) : _data[prop]);
+                            if (data[prop]) {
+                                ret = (basedOn && property.type === "object" ? thisFactory.getModel(property, data[prop]) : data[prop]);
                             }
                         }
                         return ret;
@@ -155,11 +169,13 @@ define([
                  * @return boolean success
                  */
                 this.set = function (prop, value) {
-                    if (_isValidSet(prop, value)) {
-                        onchanges[prop] && onchanges[prop].forEach(function (val, idx, obj) {
-                            val(_data[prop], value);
-                        });
-                        _data[prop] = value;
+                    if (isValidSet(prop, value)) {
+                        if (onchanges[prop]) {
+                            onchanges[prop].forEach(function (val, idx, obj) {
+                                val(data[prop], value);
+                            });
+                        }
+                        data[prop] = value;
                         return true;
                     }
                 };
@@ -176,7 +192,7 @@ define([
                  * @return {object} raw JS data.
                  */
                 this.getRaw = function () {
-                    return _data;
+                    return data;
                 };
 
                 /*
@@ -195,7 +211,7 @@ define([
                                 anotherModel.initialize(instance[val]);
                                 that.set(val, anotherModel);
                             } else {
-                                if (_isValidSet(val, instance[val], true)) {
+                                if (isValidSet(val, instance[val], true)) {
                                     that.set(val, JSON.parse(JSON.stringify(instance[val])));
                                 }
                             }
@@ -229,7 +245,7 @@ define([
                 var ret;
                 require([modelName], function (Obj) {
                     if (Obj) {
-                        if (typeof (Obj) === 'function') {
+                        if (typeof Obj === 'function') {
                             ret = new Obj();
                         } else {
                             ret = Obj;
@@ -274,7 +290,7 @@ define([
          */
         this.getModel = function (model, obj) {
             var ret;
-            if (typeof (model) === 'string') {
+            if (typeof model === 'string') {
                 ret = this.getModelByName(model, obj);
             } else {
                 ret = this.getModelBySchema(model, obj);
