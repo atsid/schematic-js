@@ -75,8 +75,8 @@ define([
                         // run through validators stopping at first failure
                         if (isValidProperty(prop, noThrow)) {
                             failure = validators.some(function (val, idx, arr) {
-                                if (val.propertyPattern.test(property)) {
-                                    lastError = val.validate(prop, this, value, schema);
+                                if (val.propertyPattern.test(prop)) {
+                                    lastError = val.validate(prop, that, value, schema);
                                     return lastError;
                                 }
                             });

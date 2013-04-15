@@ -6,7 +6,7 @@ define([
     "../util"
 ], function (
     util
-     ) {
+) {
     var module = function (config) {
         var that = this;
         this.message = {code: 0, message: "Failed regular expression match"};
@@ -19,7 +19,7 @@ define([
                 ret.push(that.message);
             }
             return ret.length ? ret : undefined;
-        }
+        };
     };
     return module;
 });

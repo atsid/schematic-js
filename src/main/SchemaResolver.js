@@ -24,7 +24,7 @@ define([
                             value = res(val);
                             return value;
                         });
-                        if (value && value.tag && !value.tag.resolved) {
+                        if (value && !value.resolved) {
                             value.resolved = true;
                             this.resolveRefs(value, subobj, key);
                         }

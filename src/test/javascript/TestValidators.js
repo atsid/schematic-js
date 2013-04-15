@@ -3,13 +3,15 @@ require([
     "schematic/plugins/SchemaValidationPlugin",
     "schematic/plugins/LuhnValidationPlugin",
     "schematic/plugins/RegExpValidationPlugin",
-    "TestData/SimpleTestModelSchema"
+    "TestData/SimpleTestModelSchema",
+    "TestData/ExtendedSchema"
 ], function (
     ModelFactory,
     SchemaValidationPlugin,
     LuhnValidationPlugin,
     RegExpValidationPlugin,
-    SimpleTestModelSchema
+    SimpleTestModelSchema,
+    ExtendedModelSchema
 ) {
         var b;
     
@@ -26,20 +28,31 @@ require([
             // test validator plumbing
             testValidatorPlumbing: function () {
                 var count = 0,
+                    limited = 0,
                     model,
                     validator = {
-                    propertyPattern: /.*/,
-                    modelPattern: /.*/,
-                    validate: function (name, model, newValue, schema) {
-                        count += 1;
-                    }
-                };
+                        propertyPattern: /.*/,
+                        modelPattern: /.*/,
+                        validate: function (name, model, newValue, schema) {
+                            count += 1;
+                        }
+                    },
+                    limitedValidator = {
+                        propertyPattern: /modelNumber/,
+                        modelPattern: /.*/,
+                        validate: function (name, model, newValue, schema) {
+                            limited += 1;
+                        }
+                    };
                 this.factory.addValidator(validator);
+                this.factory.addValidator(limitedValidator);
                 model = this.factory.getModel(SimpleTestModelSchema);
                 model.modelNumber = "12345";
                 model.optionalprop = "optional";
                 // validator should have been called twice.
-                assert(count == 2);
+                assertEquals(2, count);
+                // limitedValidator should have been called only once.
+                assertEquals(1, limited);
             },
     
             //Test the SchemaValidatorPlugin validation for required
@@ -48,19 +61,24 @@ require([
                 this.factory.addValidator(
                     new SchemaValidationPlugin({
                             propertyPattern: /.*/,
-                            modelPattern: /.*/
+                            modelPattern: /.*/,
+                            requiredMessage: {
+                                code: 333,
+                                message: "Required fool..."
+                            }
                         }
                     ));
-                model = this.factory.getModel(SimpleTestModelSchema);
+                model = this.factory.getModel(ExtendedModelSchema);
                 // should succeed.
                 model.modelNumber = "12345";
-                assertEquals(model.modelNumber, "12345");
+                assertEquals("12345", model.modelNumber);
                 // should not succeed because model number is required.
                 model.modelNumber = "";
-                assertEquals(model.modelNumber, "12345");
-                assertEquals(model.lastErrors.length, 1);
-                // test validate method direclty
+                assertEquals("12345", model.modelNumber);
+                assertEquals(1, model.lastErrors.length);
+                // test validate method directly
                 assertEquals(1, model.validate("modelNumber", "").length);
+                assertEquals(333, model.validate("modelNumber", "")[0].code);
             },
 
             //Test the LuhnValidationPlugin
