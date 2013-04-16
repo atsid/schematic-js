@@ -18,7 +18,7 @@ define([
         this.validate = function (property, instance, newValue, schema) {
             var ret = [], value = newValue || instance[property],
                 sum = 0,
-                numdigits = value.length,
+                numdigits = value && value.length,
                 parity = numdigits % 2,
                 i,
                 digit;

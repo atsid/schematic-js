@@ -3,6 +3,7 @@ require([
     "schematic/plugins/SchemaValidationPlugin",
     "schematic/plugins/LuhnValidationPlugin",
     "schematic/plugins/RegExpValidationPlugin",
+    "schematic/plugins/FutureDateValidationPlugin",
     "TestData/SimpleTestModelSchema",
     "TestData/ExtendedSchema"
 ], function (
@@ -10,6 +11,7 @@ require([
     SchemaValidationPlugin,
     LuhnValidationPlugin,
     RegExpValidationPlugin,
+    FutureDateValidationPlugin,
     SimpleTestModelSchema,
     ExtendedModelSchema
 ) {
@@ -125,6 +127,42 @@ require([
 
                 // should not succeed because credit card number is not valid
                 ret = model.validate("creditCardNumber", "1234567A");
+                assertNotUndefined(ret);
+                assertEquals(12345, ret[0].code);
+            },
+
+            //Test the RegexpValidationPlugin
+            testFutureDateValidationPlugin: function () {
+                var model, ret, date;
+                this.factory.addValidator(
+                    new FutureDateValidationPlugin({
+                            propertyPattern: /.*/,
+                            modelPattern: /.*/,
+                            message: {code: 12345, message: "failed."}
+                        }
+                    ));
+                model = this.factory.getModel(SimpleTestModelSchema);
+
+                // should succeed.
+                date = new Date(
+                    new Date().getFullYear() + 1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0);
+                ret = model.validate("optionalprop", date);
+                assertUndefined(ret);
+
+                date = new Date(
+                    new Date().getFullYear() - 1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0);
+                // should not succeed
+                ret = model.validate("optionalprop", date);
                 assertNotUndefined(ret);
                 assertEquals(12345, ret[0].code);
             }
