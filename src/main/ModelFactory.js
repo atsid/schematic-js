@@ -26,10 +26,11 @@ define([
                 return ret;
             },
         // internal model wrapper class.
-            ModelWrapper = function (schema, obj, validators) {
+            ModelWrapper = function (schema, obj, validators, options) {
 
                 var basedOn = obj, data = obj || {}, that = this,
                     lastErrors,
+                    createSubModels = options && options.createSubModels,
                     propertyCache = {},
                     onchanges = {},
                 /*
@@ -220,7 +221,8 @@ define([
                 };
 
                 /*
-                 * Define known properties that delegate to get and set.
+                 * Define known properties that delegate to get and set and
+                 * Create models for properties that are defined by a model.
                  */
                 Object.keys(propertyCache).forEach(function (val, idx, obj) {
                     Object.defineProperty(that, val, {
@@ -232,6 +234,9 @@ define([
                         },
                         enumerable: true
                     });
+                    if (propertyCache[val].id && createSubModels) {// schema define property
+                        that.set(val, thisFactory.getModel(propertyCache[val].id));
+                    }
                 });
 
                 /*
@@ -266,8 +271,9 @@ define([
          * Retrieve an empty model based on the passed schema.
          * @param {Object} schema the schema object to base the creation on.
          * @param {Object} obj an object to use as a basis instead of an empty object.
+         * @param {Object} options additional model creation options.
          */
-        this.getModelBySchema = function (schema, obj) {
+        this.getModelBySchema = function (schema, obj, options) {
             var model;
             logger.debug("Getting new model with schema ID: " + schema.id);
             if (typeof BackboneModel === "function") {
@@ -277,7 +283,7 @@ define([
                     serviceFactory: this.config.serviceFactory
                 });
             } else {
-                model = new ModelWrapper(schema, obj, pertinentValidators(schema.id));
+                model = new ModelWrapper(schema, obj, pertinentValidators(schema.id), options);
             }
             return model;
         };
@@ -287,13 +293,14 @@ define([
          * @param {Object|String} model the schema object or name recognized by the
          * configured resolver to base the creation on.
          * @param {Object} obj an object to use as a basis instead of an empty object.
+         * @param {Object} options additional model creation options.
          */
-        this.getModel = function (model, obj) {
+        this.getModel = function (model, obj, options) {
             var ret;
             if (typeof model === 'string') {
-                ret = this.getModelByName(model, obj);
+                ret = this.getModelByName(model, obj, options);
             } else {
-                ret = this.getModelBySchema(model, obj);
+                ret = this.getModelBySchema(model, obj, options);
             }
             return ret;
         };
@@ -328,11 +335,12 @@ define([
          * Retrieve an empty model by name using the configured resolver.
          * @param {String} name the name of the model as understood by the resolver.
          * @param {Object} obj an object to use as a basis instead of an empty object.
+         * @param {Object} options additional creation options.
          */
-        this.getModelByName = function (name, obj) {
+        this.getModelByName = function (name, obj, options) {
             var schema = this.getSchema(name);
             logger.debug("Getting new model by name: " + name + " using schema: " + schema);
-            return this.getModelBySchema(schema, obj);
+            return this.getModelBySchema(schema, obj, options);
         };
 
         /**

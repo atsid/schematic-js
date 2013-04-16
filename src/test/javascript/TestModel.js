@@ -1,6 +1,16 @@
-require(["schematic/ModelFactory", "TestData/SimpleTestModelSchema", "TestData/ExtendedSchema", "TestData/BaseSchema"],
-        function (ModelFactory, SimpleTestModelSchema, ExtendedSchema, BaseSchema) {
-
+require([
+    "schematic/ModelFactory",
+    "TestData/SimpleTestModelSchema",
+    "TestData/EmbeddedSchema",
+    "TestData/ExtendedSchema",
+    "TestData/BaseSchema"
+], function (
+    ModelFactory,
+    SimpleTestModelSchema,
+    EmbeddedSchema,
+    ExtendedSchema,
+    BaseSchema
+) {
         var b;
     
         /**
@@ -100,6 +110,23 @@ require(["schematic/ModelFactory", "TestData/SimpleTestModelSchema", "TestData/E
                 assertEquals("explanation", extendedModel.explanation);
                 extendedModel.comment = "comment";
                 assertEquals("comment", extendedModel.comment);
+            },
+
+            // Test embedded Models.
+            testEmbedded: function () {
+                var factory = new ModelFactory({
+                        resolver: function (name) {
+                            if (name.indexOf("EmbeddedSchema") > -1) {
+                                return EmbeddedSchema;
+                            } else if (name.indexOf("BaseSchema") > -1) {
+                                return BaseSchema;
+                            } else {
+                                return SimpleTestModelSchema;
+                            }
+                        }
+                    }),
+                    embeddedModel = factory.getModelByName("EmbeddedSchema", undefined, {createSubModels: true});
+                assertEquals("TestData/SimpleTestModelSchema", embeddedModel.embedded.schemaId);
             }
         });
 
