@@ -10,6 +10,6 @@
     paths: {
         schematic: "."
     },
-    name: "schematic/ModelFactory",
-    out: "schematic-1.0.0-min.js"
+    name: "schematic/fullpack",
+    out: "schematic-1.0.1-min.js"
 })
