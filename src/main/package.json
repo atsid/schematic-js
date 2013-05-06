@@ -26,7 +26,6 @@
         "url": "https://github.com/atsid/schematic-js.git"
     },
     "dojoBuild": "schematic.profile.js",
-    "files": ["src/main"],
     "dependencies": {
 	},
     "optionalDependencies": {
