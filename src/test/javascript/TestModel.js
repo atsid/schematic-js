@@ -127,6 +127,49 @@ require([
                     }),
                     embeddedModel = factory.getModelByName("EmbeddedSchema", undefined, {createSubModels: true});
                 assertEquals("TestData/SimpleTestModelSchema", embeddedModel.embedded.schemaId);
+            },
+
+            // Test copyFrom operation
+            testCopyFrom: function () {
+                var factory = new ModelFactory({
+                        resolver: function (name) {
+                            if (name.indexOf("EmbeddedSchema") > -1) {
+                                return EmbeddedSchema;
+                            } else if (name.indexOf("BaseSchema") > -1) {
+                                return BaseSchema;
+                            } else {
+                                return SimpleTestModelSchema;
+                            }
+                        }
+                    }),
+                    modelChanged = false,
+                    embeddedChanged = false,
+                    model = factory.getModelByName("EmbeddedSchema", undefined, {createSubModels: true}),
+                    modelCopy = factory.getModelByName("EmbeddedSchema", undefined, {createSubModels: true});
+
+                model.explanation = "Should be over-written";
+                modelCopy.explanation = "Should over-write";
+                model.embedded.modelNumber = "1111";
+                modelCopy.embedded.modelNumber = "2222";
+
+                model.onChange("explanation", function () {
+                    modelChanged = true;
+                });
+                model.embedded.onChange("modelNumber", function () {
+                    embeddedChanged = true;
+                });
+
+                assertEquals("Should be over-written", model.explanation);
+                assertEquals("1111", model.embedded.modelNumber);
+                assertFalse(modelChanged);
+                assertFalse(embeddedChanged);
+
+                model.copyFrom(modelCopy);
+
+                assertEquals("Should over-write", model.explanation);
+                assertEquals("2222", model.embedded.modelNumber);
+                assertTrue(modelChanged);
+                assertTrue(embeddedChanged);
             }
         });
 

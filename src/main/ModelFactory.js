@@ -197,6 +197,37 @@ define([
                 };
 
                 /*
+                 * Copy the properties of another model into this model.
+                 * @param {object} instance the instance to copy from.
+                 * @param {object} options an object like:
+                 * {
+                 *    shallowModels: "true if sub-models should be copied by reference instead of recursively".
+                 * }
+                 */
+                this.copyFrom = function (instance, options) {
+                    var opts = options || {};
+                    Object.keys(instance).forEach(function (val, idx, obj) {
+                        var anotherModel;
+                        if (instance[val]) {
+                            if (instance[val].schemaId) {
+                                anotherModel = that[val];
+                                if (!opts.shallowModels) {
+                                    if (!that[val]) {
+                                        anotherModel = thisFactory.getModel(instance[val].schemaId);
+                                    }
+                                    anotherModel.copyFrom(instance[val], options);
+                                }
+                                that.set(val, anotherModel);
+                            } else {
+                                if (isValidSet(val, instance[val], true)) {
+                                    that.set(val, JSON.parse(JSON.stringify(instance[val])));
+                                }
+                            }
+                        }
+                    });
+                };
+
+                /*
                  * Initialize this model with the passed instance.
                  * If a property on the instance refers to another model, then an new model
                  * is created and initialized with that model. All other valid properties are cloned.

@@ -1,0 +1,34 @@
+{
+    "name": "schematic-js",
+    "description": "A library that provides JSON schema model validation and hardening.",
+    "keywords": ["model", "JSON Schema", "json-schema", "schema", "validation"],
+    "homepage": "http://atsid.github.io/",
+    "version": "1.0.1",
+    "licenses": [
+        {
+            "type": "Apache2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+        }
+    ],
+    "contributors": [
+        {
+            "name": "moonsspoon"
+        },
+        {
+            "name": "tom-servo"
+        },
+        {
+            "name": "chileric"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/atsid/schematic-js.git"
+    },
+    "dojoBuild": "schematic.profile.js",
+    "files": ["src/main"],
+    "dependencies": {
+	},
+    "optionalDependencies": {
+    }
+}

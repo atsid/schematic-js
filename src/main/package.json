@@ -1,8 +1,0 @@
-{
-    "name": "schematic-js",
-    "description": "Provides JSONSchema-based model validation and hardening.",
-    "version": "1.0.0",
-    "dojoBuild": "schematic.profile.js",
-    "dependencies": {
-	}
-}
