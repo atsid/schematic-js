@@ -207,13 +207,14 @@ define([
                 this.copyFrom = function (instance, options) {
                     var opts = options || {};
                     Object.keys(instance).forEach(function (val, idx, obj) {
-                        var anotherModel;
+                        var anotherModel, schema;
                         if (instance[val]) {
-                            if (instance[val].schemaId) {
+                            var schemaid = instance[val].schemaId || (that[val] && that[val].schemaId);
+                            if (schemaid) {
                                 anotherModel = that[val];
                                 if (!opts.shallowModels) {
-                                    if (!that[val]) {
-                                        anotherModel = thisFactory.getModel(instance[val].schemaId);
+                                    if (!anotherModel) {
+                                        anotherModel = thisFactory.getModel(schemaid);
                                     }
                                     anotherModel.copyFrom(instance[val], options);
                                 }

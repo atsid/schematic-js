@@ -129,8 +129,8 @@ require([
                 assertEquals("TestData/SimpleTestModelSchema", embeddedModel.embedded.schemaId);
             },
 
-            // Test copyFrom operation
-            testCopyFrom: function () {
+            // Test copyFrom operation with another model
+            testCopyFromModel: function () {
                 var factory = new ModelFactory({
                         resolver: function (name) {
                             if (name.indexOf("EmbeddedSchema") > -1) {
@@ -170,7 +170,49 @@ require([
                 assertEquals("2222", model.embedded.modelNumber);
                 assertTrue(modelChanged);
                 assertTrue(embeddedChanged);
+            },
+
+            // Test copyFrom operation with a simple object
+            testCopyFromObject: function () {
+                var factory = new ModelFactory({
+                        resolver: function (name) {
+                            if (name.indexOf("EmbeddedSchema") > -1) {
+                                return EmbeddedSchema;
+                            } else if (name.indexOf("BaseSchema") > -1) {
+                                return BaseSchema;
+                            } else {
+                                return SimpleTestModelSchema;
+                            }
+                        }
+                    }),
+                    modelChanged = false,
+                    embeddedChanged = false,
+                    model = factory.getModelByName("EmbeddedSchema", undefined, {createSubModels: true}),
+                    objectCopy = {
+                        modelNumber: "1234",
+                        explanation: "It is a model",
+                        embedded: {
+                            modelNumber: "4321"
+                        }
+                    };
+
+                model.onChange("explanation", function () {
+                    modelChanged = true;
+                });
+                model.embedded.onChange("modelNumber", function () {
+                    embeddedChanged = true;
+                });
+
+                assertFalse(modelChanged);
+                assertFalse(embeddedChanged);
+
+                model.copyFrom(objectCopy);
+
+                assertEquals("It is a model", model.explanation);
+                assertEquals("1234", model.modelNumber);
+                assertEquals("4321", model.embedded.modelNumber);
+                assertTrue(modelChanged);
+                assertTrue(embeddedChanged);
             }
         });
-
 });
