@@ -13,9 +13,10 @@ define([
         util.mixin(this, config);
 
         this.validate = function (property, instance, newValue, schema) {
-            var ret = [], value = newValue || instance[property],
+            var ret = [], 
+                value = newValue === undefined ? instance[property] : newValue,
                 regexp = new RegExp(this.pattern || ".*");
-            if (!regexp.test(value)) {
+            if (value !== "" && !regexp.test(value)) {
                 ret.push(that.message);
             }
             return ret.length ? ret : undefined;

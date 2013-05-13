@@ -16,7 +16,8 @@ define([
         }
 
         this.validate = function (property, instance, newValue, schema) {
-            var ret = [], value = newValue || instance[property],
+            var ret = [], 
+                value = value = newValue === undefined ? instance[property] : newValue,
                 sum = 0,
                 numdigits = value && value.length,
                 parity = numdigits % 2,

@@ -19,19 +19,25 @@ define([
             return ret;
         },
         module = function (config) {
-            this.message = {code: 0, message: "Field is required."};
+            var defaultMessage = {code: 0, message: "Field is required."};
             util.mixin(this, config);
+
 
             this.validate = function (property, instance, newValue, schema) {
                 var ret = [],
-                    value = newValue === undefined ? instance[property] : newValue,
+                    value = newValue,
                     schemaProp = findProperty(schema, property),
                     reqWhenValue = instance[this.requiredWhen.property],
                     reqWhenArray = this.requiredWhen.values || [];
 
                 if (util.indexOf(reqWhenValue, reqWhenArray) > -1) {
                     if (schemaProp && !value) {
-                        ret.push(this.message);
+                        if (this.message && this.message.message) {
+                            ret.push(this.message);
+                        }
+                        else {
+                            ret.push(defaultMessage);          
+                        }
                     }
                 }
                 return ret.length ? ret : undefined;

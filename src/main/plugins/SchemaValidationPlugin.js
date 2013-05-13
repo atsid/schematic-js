@@ -23,7 +23,7 @@ define([
 
             this.validate = function (property, instance, newValue, schema) {
                 var ret = [],
-                    value = newValue === undefined ? instance[property] : newValue,
+                    value = newValue,
                     schemaProp = findProperty(schema, property);
                 // required
                 if (schemaProp) {
