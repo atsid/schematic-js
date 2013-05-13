@@ -131,9 +131,11 @@ define([
                  * @returns a copy of the schema properties defined for the model.
                  */
                 this.getMeta = function (prop) {
-                    return util.mixin({}, propertyCache[prop]);
+                    if (isValidProperty(prop, false)) {
+                        return util.mixin({}, propertyCache[prop]);
+                    };
                 };
-
+                
                 /**
                  * Expose validation function.
                  * @param prop - the name of the property to set
