@@ -11,7 +11,7 @@ define([
 
         this.validate = function (property, instance, newValue, schema) {
             var ret = [],
-                value = newValue || instance[property],
+                value = newValue === undefined ? instance[property] : newValue,
                 date = Date.parse(value),
                 now = Date.now();
 
