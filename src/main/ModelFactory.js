@@ -6,11 +6,13 @@
 define([
     "./log",
     "./SchemaResolver",
-    "./BackboneExtension"
+    "./BackboneExtension",
+    "./util"
 ], function (
     logger,
     SchemaResolver,
-    BackboneModel
+    BackboneModel,
+    util
 ) {
 
     return function (config) {
@@ -124,6 +126,15 @@ define([
                 });
 
                 /**
+                 * Expose the validation meta-data for a property on the schema.
+                 * @param prop - the name of the property to set
+                 * @returns a copy of the schema properties defined for the model.
+                 */
+                this.getMeta = function (prop) {
+                    return util.mixin({}, propertyCache[prop]);
+                };
+
+                /**
                  * Expose validation function.
                  * @param prop - the name of the property to set
                  * @param value - possible value.
@@ -207,7 +218,7 @@ define([
                 this.copyFrom = function (instance, options) {
                     var opts = options || {};
                     Object.keys(instance).forEach(function (val, idx, obj) {
-                        var anotherModel, schema;
+                        var anotherModel;
                         if (instance[val]) {
                             var schemaid = instance[val].schemaId || (that[val] && that[val].schemaId);
                             if (schemaid) {
