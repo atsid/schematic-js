@@ -19,6 +19,8 @@ define([
         },
         module = function (config) {
             this.requiredMessage = {code: 0, message: "Field is required."};
+            this.maxLengthMessage = {code: 0, message: "Field length is greater than max allowable"};
+            this.minLengthMessage = {code: 0, message: "Field length is less than minimum required"};
             util.mixin(this, config);
 
             this.validate = function (property, instance, newValue, schema) {
@@ -30,10 +32,15 @@ define([
                     // require check
                     if (schemaProp.required && !value) {
                         ret.push(this.requiredMessage);
+                    } else if (value && schemaProp.maximum && (value.length > schemaProp.maximum)) {
+                        ret.push(this.maxLengthMessage);
+                    } else if (value && schemaProp.minimum && (value.length < schemaProp.minimum)) {
+                        ret.push(this.minLengthMessage);
                     }
                 }
                 return ret.length ? ret : undefined;
             };
+            
         };
     return module;
 });
