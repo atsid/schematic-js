@@ -1,5 +1,6 @@
 define([
     "./ModelFactory",
+    "./plugins/ConditionallyRequiredValidationPlugin",
     "./plugins/FutureDateValidationPlugin",
     "./plugins/LuhnValidationPlugin",
     "./plugins/RegExpValidationPlugin",
