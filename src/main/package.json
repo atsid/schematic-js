@@ -3,7 +3,7 @@
     "description": "A library that provides JSON schema model validation and hardening.",
     "keywords": ["model", "JSON Schema", "json-schema", "schema", "validation"],
     "homepage": "http://atsid.github.io/",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "licenses": [
         {
             "type": "Apache2.0",
@@ -19,6 +19,9 @@
         },
         {
             "name": "chileric"
+        },
+        {
+            "name": "ssmith7"
         }
     ],
     "repository": {
