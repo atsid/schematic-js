@@ -90,7 +90,9 @@ define([
                     },
                     cacheProperties = function (schema, cache) {
                         Object.keys(schema.properties).forEach(function (prop) {
-                            cache[prop] = schema.properties[prop];
+                            if (schema.properties[prop]) {
+                                cache[prop] = schema.properties[prop];
+                            }
                         });
                     },
                     walkExtends = function (schema, operation) {
