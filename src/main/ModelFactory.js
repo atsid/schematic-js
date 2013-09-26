@@ -182,10 +182,12 @@ define([
                  * Sets value for requested property
                  * @param string Property name
                  * @param value Value to set
+                 * @param opts options
                  * @return boolean success
                  */
-                this.set = function (prop, value) {
-                    if (isValidSet(prop, value)) {
+                this.set = function (prop, value, opts) {
+                    var opts = opts || {};
+                    if (isValidSet(prop, value) || opts.ignoreIsValidSet) {
                         if (onchanges[prop]) {
                             onchanges[prop].forEach(function (val, idx, obj) {
                                 val(data[prop], value);
@@ -235,8 +237,8 @@ define([
                                 }
                                 that.set(val, anotherModel);
                             } else {
-                                if (isValidSet(val, instance[val], true)) {
-                                    that.set(val, JSON.parse(JSON.stringify(instance[val])));
+                                if (isValidSet(val, instance[val], true) || opts.ignoreIsValidSet) {
+                                    that.set(val, JSON.parse(JSON.stringify(instance[val])), opts);
                                 }
                             }
                         }
