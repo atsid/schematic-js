@@ -24,9 +24,10 @@ define([
 
             this.validate = function (property, instance, newValue, schema) {
                 var ret = [],
-                    value = newValue === undefined ? instance[property] : newValue;
+                    value = newValue === undefined ? instance[property] : newValue,
+                    match = this.match;
                     
-                if (this.matchProperty && value !== instance[this.matchProperty]) {
+                if ((this.matchProperty && value === instance[this.matchProperty]) !== match)  {
                       if (this.message && this.message.message) {
                           ret.push(this.message);
                       }
