@@ -24,10 +24,16 @@ define([
 
             this.validate = function (property, instance, newValue, schema) {
                 var ret = [],
+                    caseSensitive = this.caseSensitive === undefined ? true : this.caseSensitive,
                     value = newValue === undefined ? instance[property] : newValue,
+                    matchValue = instance[this.matchProperty],
                     match = this.match;
-                    
-                if ((this.matchProperty && value === instance[this.matchProperty]) !== match)  {
+                
+                if (!caseSensitive) {
+                    value = value.toUpperCase();
+                    matchValue = matchValue.toUpperCase();
+                }
+                if ((value === matchValue) !== match)  {
                       if (this.message && this.message.message) {
                           ret.push(this.message);
                       }
