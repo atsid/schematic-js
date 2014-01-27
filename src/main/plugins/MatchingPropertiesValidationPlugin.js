@@ -33,7 +33,7 @@ define([
                     value = value.toUpperCase();
                     matchValue = matchValue.toUpperCase();
                 }
-                if ((value === matchValue) !== match)  {
+                if (matchValue && (value === matchValue) !== match)  {
                       if (this.message && this.message.message) {
                           ret.push(this.message);
                       }
