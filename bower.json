@@ -1,0 +1,42 @@
+{
+  "name": "schematic-js",
+  "version": "1.0.3",
+  "homepage": "https://github.com/atsid/schematic-js",
+  "authors": [
+    "talkswithnumbers",
+    "tom-servo",
+    "moonsspoon",
+    "chileric",
+    "ssmith"
+  ],
+  "description": "An ES5 JSON-schema-based model support library.",
+  "main": "src/main/ModelFactory.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "JSON",
+    "JSON",
+    "Schema",
+    "Schema",
+    "models",
+    "validation",
+    "model"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-jasmine": "~0.6.1",
+    "grunt-template-jasmine-requirejs": "~0.1.8",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-connect": "~0.6.0"
+  }
+}
