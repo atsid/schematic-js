@@ -164,7 +164,7 @@ define([
                     if (isValidProperty(prop)) {
                         if (property.type === "array" && basedOn) {
                             ret = [];
-                            data[prop].forEach(function (obj, idx) {
+                            (data[prop] || []).forEach(function (obj, idx) {
                                 if (obj) {
                                     ret.push(thisFactory.getModel(property.items, obj));
                                 }
