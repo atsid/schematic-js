@@ -25,12 +25,17 @@ define([
 
             this.validate = function (property, instance, newValue, schema) {
                 var ret = [],
+                    requiredFields = {},
                     value = newValue,
                     schemaProp = findProperty(schema, property);
+                // support v3 required spec
+                (schema.required || []).forEach(function (item) {
+                    requiredFields[item] = true;
+                })
                 // required
                 if (schemaProp) {
                     // require check
-                    if (schemaProp.required && !value) {
+                    if ((schemaProp.required || requiredFields[property]) && !value) {
                         ret.push(this.requiredMessage);
                     } else if (value && schemaProp.maximum && (value.length > schemaProp.maximum)) {
                         ret.push(this.maxLengthMessage);
