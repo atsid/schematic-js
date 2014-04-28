@@ -16,7 +16,7 @@ module.exports = function (grunt) {
                         schematic: "."
                     },
                     name: "schematic/fullpack",
-                    out: "schematic-1.0.6-min.js"
+                    out: "schematic-1.0.7-min.js"
                 }
             }
         },
@@ -33,23 +33,21 @@ module.exports = function (grunt) {
         // jasmine template
         jasmine: {
             test: {
-                src: '',
+                src: 'src/main/**/*.js',
                 options: {
-                    specs: './src/test/specs/*.spec.js',
+                    specs: 'src/test/specs/*.spec.js',
                     helpers: '',
                     host: 'http://127.0.0.1:9001/',
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: {
-                        baseUrl: "./src",
-                        paths: {
-                            schematic: "main",
-                            external: "./src/test/javascript/third-party",
-                            test: "./src/test/javascript",
-                            TestData: "./src/test/data"
-                        },
-                        map: {
-                            "*": {
-                                "schematic/Validator": "test/Validator"
+                        requireConfig: {
+                            baseUrl: "src",
+                            paths: {
+                                schematic: "main",
+                                external: "test/javascript/third-party",
+                                test: "test/javascript",
+                                TestData: "test/data",
+                                poly: "../bower_components/poly"
                             }
                         }
                     }
@@ -65,5 +63,9 @@ module.exports = function (grunt) {
     grunt.registerTask('test', [
         'connect',
         'jasmine'
+    ]);
+
+    grunt.registerTask('compile', [
+        'requirejs:compile'
     ]);
 };

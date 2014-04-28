@@ -11,5 +11,5 @@
         schematic: "."
     },
     name: "schematic/fullpack",
-    out: "schematic-1.0.6-min.js"
+    out: "schematic-1.0.7-min.js"
 })

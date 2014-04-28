@@ -166,7 +166,11 @@ define([
                             ret = [];
                             (data[prop] || []).forEach(function (obj, idx) {
                                 if (obj) {
-                                    ret.push(thisFactory.getModel(property.items, obj));
+                                    if (typeof obj == "object") {
+                                        ret.push(thisFactory.getModel(property.items, obj));
+                                    } else {
+                                        ret.push(obj);
+                                    }
                                 }
                             }, this);
                         } else {
