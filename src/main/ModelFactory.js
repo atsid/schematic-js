@@ -174,9 +174,7 @@ define([
                                 }
                             }, this);
                         } else {
-                            if (data[prop]) {
-                                ret = (basedOn && property.type === "object" ? thisFactory.getModel(property, data[prop]) : data[prop]);
-                            }
+                            ret = (basedOn && property.type === "object" ? thisFactory.getModel(property, data[prop]) : data[prop]);
                         }
                         return ret;
                     }
