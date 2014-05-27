@@ -175,9 +175,6 @@ define([
                     if (!success) {
                         ret = lastErrors;
                     }
-                    logger.debug("success is " + success);
-                    logger.debug("lastErrors is " + lastErrors);
-                    logger.debug("returning " + ret);
                     return ret;
                 };
 
