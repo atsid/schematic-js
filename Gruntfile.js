@@ -16,7 +16,7 @@ module.exports = function (grunt) {
                         schematic: "."
                     },
                     name: "schematic/fullpack",
-                    out: "schematic-1.0.8-min.js"
+                    out: "schematic-1.0.9-min.js"
                 }
             }
         },
