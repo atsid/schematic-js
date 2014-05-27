@@ -60,15 +60,17 @@ define([
 
                 /*
                  * Validate a .set() call. Ensures set property is valid.
+                 *   Adheres to the setting of config.validatedSet by
+                 *   by applying all validators if it is truthy
                  * @param string Property name
                  * @param value
                  * @param boolean return boolean instead of throw.
-                 * @return boolean valid
+                 * @return boolean validate regardless of configuration.
                  * @throws Property not defined
                  * @throws Invalid type
                  * @private
                  */
-                    isValidSet = function (prop, value, noThrow) {
+                    isValidSet = function (prop, value, noThrow, forceValidation) {
 
                         var property = propertyCache[prop],
                             lastError,
@@ -77,13 +79,18 @@ define([
                         logger.debug("Checking if property: " + prop + " is valid to set");
                         // run through validators stopping at first failure
                         if (isValidProperty(prop, noThrow)) {
-                            failure = validators.some(function (val, idx, arr) {
-                                if (val.propertyPattern.test(prop)) {
-                                    lastError = val.validate(prop, that, value, schema);
-                                    return lastError;
-                                }
-                            });
-                            lastErrors = lastError;
+                            if (thisFactory.config.validatedSet || forceValidation) {
+                                logger.debug("Running validators on " + prop);
+                                failure = validators.some(function (val, idx, arr) {
+                                    if (val.propertyPattern.test(prop)) {
+                                        lastError = val.validate(prop, that, value, schema);
+                                        return lastError;
+                                    }
+                                });
+                                lastErrors = lastError;
+                            } else {
+                                failure = false;
+                            }
                         }
 
                         return !failure;
@@ -139,18 +146,38 @@ define([
                 };
                 
                 /**
-                 * Expose validation function.
+                 * Expose validation function. If prop is undefined
+                 *  validate the whole top-level model.
+                 * After completion "lastErrors" will contain an object
+                 * matching property names to errors.
+                 *
                  * @param prop - the name of the property to set
                  * @param value - possible value.
                  * @returns set of errors or undefined
                  */
                 this.validate = function (prop, value) {
                     var ret,
-                        success = isValidSet(prop, value, true);
+                        success = true;
+                    if (!prop) {
+                        errors = {};
+                        Object.keys(propertyCache).forEach(function(key) {
+                            logger.debug("Validating " + key + " with " + data[key]);
+                            if (!isValidSet(key, data[key], true, true)) {
+                                errors[key] = lastErrors;
+                                success = false;
+                            }
+                        });
+                        lastErrors = errors;
+                    } else {
+                        success = isValidSet(prop, value, true, true);
+                    }
 
                     if (!success) {
                         ret = lastErrors;
                     }
+                    logger.debug("success is " + success);
+                    logger.debug("lastErrors is " + lastErrors);
+                    logger.debug("returning " + ret);
                     return ret;
                 };
 
@@ -166,7 +193,7 @@ define([
                             ret = [];
                             (data[prop] || []).forEach(function (obj, idx) {
                                 if (obj) {
-                                    if (typeof obj == "object") {
+                                    if (typeof obj == "object" && !property.items.type) {
                                         ret.push(thisFactory.getModel(property.items, obj));
                                     } else {
                                         ret.push(obj);

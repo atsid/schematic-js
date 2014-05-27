@@ -37,9 +37,9 @@ define([
                     // require check
                     if ((schemaProp.required || requiredFields[property]) && !value) {
                         ret.push(this.requiredMessage);
-                    } else if (value && schemaProp.maximum && (value.length > schemaProp.maximum)) {
+                    } else if (value && schemaProp.maxLength && (value.length > schemaProp.maxLength)) {
                         ret.push(this.maxLengthMessage);
-                    } else if (value && schemaProp.minimum && (value.length < schemaProp.minimum)) {
+                    } else if (value && schemaProp.minLength && (value.length < schemaProp.minLength)) {
                         ret.push(this.minLengthMessage);
                     }
                 }
