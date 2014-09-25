@@ -197,13 +197,15 @@ define([
                                     }
                                 }
                             }, this);
+                        } else if ((property.type === "boolean") && ((data[prop] === undefined) || (data[prop] === false))) {  
+                            ret = false; 
                         } else {
                             ret = (basedOn && property.type === "object" ? thisFactory.getModel(property, data[prop]) : data[prop]);
                         }
                         return ret;
                     }
                 };
-
+ 
                 /*
                  * Sets value for requested property
                  * @param string Property name

@@ -35,7 +35,7 @@ define([
                 // required
                 if (schemaProp) {
                     // require check
-                    if ((schemaProp.required || requiredFields[property]) && !value) {
+                    if ((schemaProp.required || requiredFields[property]) && !value && schemaProp.type != "boolean") {
                         ret.push(this.requiredMessage);
                     } else if (value && schemaProp.maxLength && (value.length > schemaProp.maxLength)) {
                         ret.push(this.maxLengthMessage);
