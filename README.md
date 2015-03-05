@@ -1,3 +1,5 @@
+[![Dependency Status](https://david-dm.org/atsid/schematic-js.svg)](https://david-dm.org/atsid/schematic-js)
+
 #schematic-js
 An ES5 JSON-schema-based model support library.
 
