@@ -1,3 +1,4 @@
+[![Code Climate](https://codeclimate.com/github/atsid/schematic-js/badges/gpa.svg)](https://codeclimate.com/github/atsid/schematic-js)
 [![Dependency Status](https://david-dm.org/atsid/schematic-js.svg)](https://david-dm.org/atsid/schematic-js)
 
 #schematic-js
