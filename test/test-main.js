@@ -7,21 +7,20 @@ var allTestFiles = [],
     };
 
 Object.keys(window.__karma__.files).forEach(function (file) {
-    console.log(file);
-    if (/Test.*\.js$/.test(file)) {
+    if (/\/Test.*\.js$/.test(file)) {
         // Normalize paths to RequireJS module names.
         allTestFiles.push(pathToModule(file));
     }
 });
 
-console.log(allTestFiles);
+window.TestCase = function () {};
 
 requirejs.config({
     // Karma serves files from '/base'
     baseUrl: '/base',
 
     paths: {
-        schematic: "main",
+        schematic: "js",
         external: "test/lib",
         test: "test",
         TestData: "test/data"
