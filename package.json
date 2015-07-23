@@ -6,16 +6,12 @@
     "JSON Schema",
     "json-schema",
     "schema",
-    "validation"
+    "validation",
+    "backbone"
   ],
   "homepage": "http://atsid.github.io/",
   "version": "1.0.9",
-  "licenses": [
-    {
-      "type": "Apache2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
+  "license": "Apache-2.0",
   "contributors": [
     {
       "name": "moonsspoon"
@@ -28,22 +24,33 @@
     },
     {
       "name": "ssmith7"
+    },
+    {
+      "name": "natoverse"
     }
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/atsid/schematic-js.git"
   },
-  "dojoBuild": "schematic.profile.js",
   "dependencies": {},
-  "optionalDependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-requirejs": "~0.4.1",
-    "grunt-contrib-jasmine": "~0.5.3",
-    "grunt-template-jasmine-requirejs": "~0.1.8",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-connect": "~0.6.0",
+    "grunt": "0.4.2",
+    "mocha": "1.14.0",
+    "chai": "2.1.0",
+    "requirejs": "2.1.16",
+    "grunt-contrib-jshint": "0.7.2",
+    "grunt-mocha-test": "0.8.0",
+    "grunt-contrib-watch": "0.5.3",
+    "grunt-contrib-requirejs": "0.4.4",
+    "grunt-karma": "0.10.1",
+    "karma": "0.12.31",
+    "karma-mocha": "0.1.10",
+    "karma-mocha-reporter": "1.0.0",
+    "karma-chai": "0.1.0",
+    "karma-requirejs": "0.2.2",
+    "karma-chrome-launcher": "0.1.7",
+    "karma-phantomjs-launcher": "0.1.4",
     "bower": "~1.3.0"
   }
 }

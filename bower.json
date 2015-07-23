@@ -10,7 +10,7 @@
     "ssmith"
   ],
   "description": "An ES5 JSON-schema-based model support library.",
-  "main": "src/main/ModelFactory.js",
+  "main": "js/ModelFactory.js",
   "moduleType": [
     "amd"
   ],
@@ -33,7 +33,6 @@
   ],
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-contrib-jasmine": "~0.6.1",
     "grunt-cli": "~0.1.13",
     "poly": "~0.6.0"
   }

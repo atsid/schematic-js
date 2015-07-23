@@ -1,0 +1,33 @@
+{
+    "boss":      true,
+    "node":      true,
+    "strict":    true,
+    "white":     true,
+    "smarttabs": true,
+    "maxlen":    1000,
+    "newcap":    false,
+    "undef":     true,
+    "unused":    false,
+    "onecase":   true,
+    "indent":    4,
+    "globals": {
+        "define": true,
+        "require": true,
+        "Backbone": true,
+        "it": true,
+        "describe": true,
+        "assert": true,
+        "beforeEach": true,
+        "before": true,
+        "afterEach": true,
+        "after": true,
+        "TestCase": true,
+        "assertEquals": true,
+        "assertNotEquals": true,
+        "assertTrue": true,
+        "assertUndefined": true,
+        "assertNotUndefined": true,
+        "assertException": true,
+        "assertFalse": true
+    }
+}
