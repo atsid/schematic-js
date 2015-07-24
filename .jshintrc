@@ -21,14 +21,6 @@
         "beforeEach": true,
         "before": true,
         "afterEach": true,
-        "after": true,
-        "TestCase": true,
-        "assertEquals": true,
-        "assertNotEquals": true,
-        "assertTrue": true,
-        "assertUndefined": true,
-        "assertNotUndefined": true,
-        "assertException": true,
-        "assertFalse": true
+        "after": true
     }
 }
