@@ -8,34 +8,28 @@ define([
 
     'use strict';
 
-    var b;
+    describe('ModelFactory', function () {
 
-    /**
-     * Test the model factory
-     */
-    b = new TestCase("TestModelFactory", {
+        var factory;
 
-        setUp: function () {
-            this.factory = new ModelFactory({
+        //reset the factory each time
+        beforeEach(function () {
+            factory = new ModelFactory({
                 resolver: function () {
                     return SimpleTestModelSchema;
                 }
             });
-        },
+        });
 
-        //Ensures that the getModel() function from ModelFactory will return
-        //a model when passed a string (name)
-        testGetModelByName: function () {
-            var model = this.factory.getModel("TestData/SimpleTestModelSchema");
-            assertNotUndefined(model);
-        },
+        it('get model by name', function () {
+            var model = factory.getModel("TestData/SimpleTestModelSchema");
+            assert.isDefined(model);
+        });
 
-        //Ensures that the getModel() function from ModelFactory will return
-        //a model when passed a schema
-        testGetModelBySchema: function () {
-            var model = this.factory.getModel(SimpleTestModelSchema);
-            assertNotUndefined(model);
-        }
+        it('get model by schema instance', function () {
+            var model = factory.getModel(SimpleTestModelSchema);
+            assert.isDefined(model);
+        });
 
     });
 
