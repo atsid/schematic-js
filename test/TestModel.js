@@ -213,7 +213,7 @@ define([
             assert.equal("4321", model.embedded.modelNumber);
             assert.isTrue(modelChanged);
             assert.isTrue(embeddedChanged);
-            
+
         });
 
     });

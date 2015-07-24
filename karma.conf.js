@@ -14,6 +14,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+        'test/lib/require.js',
+        'test/lib/underscore.js',
+        'test/lib/backbone.js',
         'test/test-main.js',
         {pattern: 'js/**/*.js', included: false},
         {pattern: 'test/**/*.js', included: false}

@@ -9,83 +9,91 @@ define([
 
     'use strict';
 
-    var b;
+    describe('BackboneModel', function () {
 
-    /**
-     * Test the model directly
-     */
-    b = new TestCase("TestBackboneModel", {
+        var factory, model;
 
-        setUp: function () {
-            this.factory = new ModelFactory();
-            this.model = this.factory.getModel(SimpleTestModelSchema);
-        },
+        beforeEach(function () {
+            factory = new ModelFactory({
+                resolver: function () {
+                    return SimpleTestModelSchema;
+                }
+            });
+            model = factory.getModel(SimpleTestModelSchema);
+        });
+        
+        it('model is a Backbone model', function () {
 
-        testIsBackboneModel: function () {
-            assertNotUndefined(Backbone);
-            assertNotUndefined(this.model);
-            assertTrue((this.model instanceof Backbone.SchematicModel));
-            assertTrue(this.model.isNew());
-        },
+            assert.isDefined(Backbone);
+            assert.isDefined(model);
+            assert.isTrue((model instanceof Backbone.SchematicModel));
+            assert.isTrue(model.isNew());
 
-        testBackboneModelSchemaSupport: function () {
+        });
+
+        it('Backbone model respects schema rules', function () {
+
             var success = true;
 
             // should not be able to set an attribute that isn't on the schema
-            this.model.set("noattr", "shouldntset", {validate: true});
-            assertNotEquals("shouldntset", this.model.get("noattr"));
-            assertFalse(this.model.isValid());
+            model.set("noattr", "shouldntset", {validate: true});
+            assert.notEqual("shouldntset", model.get("noattr"));
+            assert.isFalse(model.isValid());
 
             // required attributes should be set before save.
-            success = this.model.save({"noattr": "shouldntset"}, {
+            success = model.save({"noattr": "shouldntset"}, {
                 validate: true
             });
-            assertFalse(success);
+            assert.isFalse(success);
 
             // should be able to get and set all attributes that are in the
             // schema.
-            this.model.set("modelNumber", "1111");
-            assertEquals("1111", this.model.get("modelNumber"));
-            assertEquals("1111", this.model.modelNumber);
+            model.set("modelNumber", "1111");
+            assert.equal("1111", model.get("modelNumber"));
+            assert.equal("1111", model.modelNumber);
 
-            this.model.modelNumber = "2222";
-            assertEquals("2222", this.model.get("modelNumber"));
-            assertEquals("2222", this.model.modelNumber);
+            model.modelNumber = "2222";
+            assert.equal("2222", model.get("modelNumber"));
+            assert.equal("2222", model.modelNumber);
 
-            this.model.set("optionalprop", "optional");
-            assertEquals("optional", this.model.get("optionalprop"));
-            assertEquals("optional", this.model.optionalprop);
+            model.set("optionalprop", "optional");
+            assert.equal("optional", model.get("optionalprop"));
+            assert.equal("optional", model.optionalprop);
 
             // shouldn't be able to set longer than 4 chars for modelNumber.
-            this.model.set("modelNumber", "55555", {validate: true});
-            assertNotEquals("55555", this.model.get("modelNumber"));
-            this.model.modelNumber = "55555";
-            assertNotEquals("55555", this.model.modelNumber);
+            model.set("modelNumber", "55555", {validate: true});
+            assert.notEqual("55555", model.get("modelNumber"));
+            model.modelNumber = "55555";
+            assert.notEqual("55555", model.modelNumber);
 
-        },
+        });
 
-        testBackboneModelServiceSupport: function () {
+        it('model uses services for save', function () {
+
             var success = true;
 
             // should be able to get and set all attributes that are in the
             // schema.
-            this.model.set("modelNumber", "1111");
-            assertEquals("1111", this.model.get("modelNumber"));
-            assertEquals("1111", this.model.modelNumber);
+            model.set("modelNumber", "1111");
+            assert.equal("1111", model.get("modelNumber"));
+            assert.equal("1111", model.modelNumber);
 
-            this.model.modelNumber = "2222";
-            assertEquals("2222", this.model.get("modelNumber"));
-            assertEquals("2222", this.model.modelNumber);
+            model.modelNumber = "2222";
+            assert.equal("2222", model.get("modelNumber"));
+            assert.equal("2222", model.modelNumber);
 
-            this.model.set("optionalprop", "optional");
-            assertEquals("optional", this.model.get("optionalprop"));
-            assertEquals("optional", this.model.optionalprop);
+            model.set("optionalprop", "optional");
+            assert.equal("optional", model.get("optionalprop"));
+            assert.equal("optional", model.optionalprop);
 
             // should be able to save...
-            success = this.model.save({"noattr": "shouldntset"}, {
+            success = model.save({"noattr": "shouldntset"}, {
                 validate: true
             });
-            assertTrue(success);
-        }
+            assert.isTrue(success);
+
+        });
+
     });
+
 });
