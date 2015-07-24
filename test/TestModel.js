@@ -14,109 +14,103 @@ define([
 
     'use strict';
 
-    var b;
+    describe('Model', function () {
 
-    /**
-     * Test the model directly
-     */
-    b = new TestCase("TestModel", {
+        var factory, model;
 
-        setUp: function () {
-            this.factory = new ModelFactory();
-            this.model = this.factory.getModel(SimpleTestModelSchema);
-        },
+        beforeEach(function () {
+            factory = new ModelFactory({
+                resolver: function () {
+                    return SimpleTestModelSchema;
+                }
+            });
+            model = factory.getModel(SimpleTestModelSchema);
+        });
 
-        //Ensures that the model constructor correctly sets the schemaId and
-        //that it freezes the object so properties can only be modified using the
-        //set() function
-        testConstructor: function () {
-            var prop = this.model.modelNumber;
+        it('constructor sets schemaId and freezes the object properties', function () {
 
-            assertNotUndefined(this.model);
-            assertEquals(this.model.schemaId, SimpleTestModelSchema.id);
+            var prop = model.modelNumber;
+
+            assert.isDefined(model);
+            assert.equal(model.schemaId, SimpleTestModelSchema.id);
 
             //testing that the Model is frozen after creation
-            assertException(function () { this.model.modelNumber = "9999"; });
-            assertFalse(prop === "9999");
-        },
+            assert.throws(function () { model.modelNumber = "9999"; }, 'Attempted to assign to readonly property.');
+            assert.isFalse(prop === "9999");
 
-        // Test simple set and get for properties
-        testSimpleSetGet: function () {
-            var prop;
+        });
 
-            this.model.set("modelNumber", "1234");
-            prop = this.model.get("modelNumber");
+        it('setter/getter', function () {
 
-            assertTrue(prop === "1234");
+            model.set("modelNumber", "1234");
+            var prop = model.get("modelNumber");
 
-        },
+            assert.equal("1234", prop);
+        });
 
-        // Test natural property access.
-        testSimplePropertyAccessors: function () {
-            var prop;
+        it('property accessors', function () {
 
-            this.model.modelNumber = "1234";
-            prop = this.model.modelNumber;
+            model.modelNumber = "1234";
+            var prop = model.modelNumber;
 
-            assertTrue(prop === "1234");
-        },
+            assert.equal("1234", prop);
+        });
 
-        // Test initialize
-        testModelInitialize: function () {
-            var model2 = this.factory.getModel(SimpleTestModelSchema);
+        it('initialize method uses existing model as template', function () {
+
+            var model2 = factory.getModel(SimpleTestModelSchema);
 
             model2.set("modelNumber", "4567");
-            this.model.initialize(model2);
+            model.initialize(model2);
 
-            assertEquals("4567", this.model.modelNumber);
-        },
+            assert.equal("4567", model.modelNumber);
+        });
 
-        // Test serializing a model
-        testSerialization: function () {
-            var serialized;
+        it('serialized model (JSON.stringify) contains expected properties from schema', function () {
 
-            this.model.modelNumber = "1234";
-            this.model.optionalprop = "optional";
+            model.modelNumber = "1234";
+            model.optionalprop = "optional";
 
-            serialized = JSON.stringify(this.model);
-            assertEquals("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\",\"optionalprop\":\"optional\"}", serialized);
-        },
+            var serialized = JSON.stringify(model);
+            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\",\"optionalprop\":\"optional\"}", serialized);
 
-        // Test serializing a model
-        testOptionalSerialization: function () {
-            var serialized;
+        });
 
-            this.model.modelNumber = "1234";
+        it('serialized model leaves out unset optional properties', function () {
 
-            serialized = JSON.stringify(this.model);
-            assertEquals("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\"}", serialized);
-        },
+            model.modelNumber = "1234";
 
-        // Test extended Models.
-        testExtension: function () {
+            var serialized = JSON.stringify(model);
+            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\"}", serialized);
+
+        });
+
+        it('schema extension includes new properties', function () {
+
             var factory = new ModelFactory({
-                resolver: function (name) {
-                    if (name.indexOf("ExtendedSchema") > -1) {
-                        return ExtendedSchema;
-                    } else {
-                        return BaseSchema;
+                    resolver: function (name) {
+                        if (name.indexOf("ExtendedSchema") > -1) {
+                            return ExtendedSchema;
+                        } else {
+                            return BaseSchema;
+                        }
                     }
-                }
-            }),
-            extendedModel = factory.getModelByName("ExtendedSchema");
+                }),
+                extendedModel = factory.getModelByName("ExtendedSchema");
 
             extendedModel.modelNumber = "1234";
-            assertEquals("1234", extendedModel.modelNumber);
+            assert.equal("1234", extendedModel.modelNumber);
             extendedModel.optionalprop = "optional";
-            assertEquals("optional", extendedModel.optionalprop);
+            assert.equal("optional", extendedModel.optionalprop);
             extendedModel.explanation = "explanation";
-            assertEquals("explanation", extendedModel.explanation);
+            assert.equal("explanation", extendedModel.explanation);
             extendedModel.comment = "comment";
-            assertEquals("comment", extendedModel.comment);
-        },
+            assert.equal("comment", extendedModel.comment);
+            
+        });
 
-        // Test embedded Models.
-        testEmbedded: function () {
+        it('embedded models are correctly created within schemas', function () {
+
             var factory = new ModelFactory({
                     resolver: function (name) {
                         if (name.indexOf("EmbeddedSchema") > -1) {
@@ -129,11 +123,13 @@ define([
                     }
                 }),
                 embeddedModel = factory.getModelByName("EmbeddedSchema", undefined, {createSubModels: true});
-            assertEquals("TestData/SimpleTestModelSchema", embeddedModel.embedded.schemaId);
-        },
 
-        // Test copyFrom operation with another model
-        testCopyFromModel: function () {
+            assert.equal("TestData/SimpleTestModelSchema", embeddedModel.embedded.schemaId);
+
+        });
+
+        it('copyFrom model operation replicates across models', function () {
+
             var factory = new ModelFactory({
                     resolver: function (name) {
                         if (name.indexOf("EmbeddedSchema") > -1) {
@@ -162,21 +158,22 @@ define([
                 embeddedChanged = true;
             });
 
-            assertEquals("Should be over-written", model.explanation);
-            assertEquals("1111", model.embedded.modelNumber);
-            assertFalse(modelChanged);
-            assertFalse(embeddedChanged);
+            assert.equal("Should be over-written", model.explanation);
+            assert.equal("1111", model.embedded.modelNumber);
+            assert.isFalse(modelChanged);
+            assert.isFalse(embeddedChanged);
 
             model.copyFrom(modelCopy);
 
-            assertEquals("Should over-write", model.explanation);
-            assertEquals("2222", model.embedded.modelNumber);
-            assertTrue(modelChanged);
-            assertTrue(embeddedChanged);
-        },
+            assert.equal("Should over-write", model.explanation);
+            assert.equal("2222", model.embedded.modelNumber);
+            assert.isTrue(modelChanged);
+            assert.isTrue(embeddedChanged);
 
-        // Test copyFrom operation with a simple object
-        testCopyFromObject: function () {
+        });
+
+        it('copyFrom object operations replicates to new model', function () {
+
             var factory = new ModelFactory({
                     resolver: function (name) {
                         if (name.indexOf("EmbeddedSchema") > -1) {
@@ -206,16 +203,19 @@ define([
                 embeddedChanged = true;
             });
 
-            assertFalse(modelChanged);
-            assertFalse(embeddedChanged);
+            assert.isFalse(modelChanged);
+            assert.isFalse(embeddedChanged);
 
             model.copyFrom(objectCopy);
 
-            assertEquals("It is a model", model.explanation);
-            assertEquals("1234", model.modelNumber);
-            assertEquals("4321", model.embedded.modelNumber);
-            assertTrue(modelChanged);
-            assertTrue(embeddedChanged);
-        }
+            assert.equal("It is a model", model.explanation);
+            assert.equal("1234", model.modelNumber);
+            assert.equal("4321", model.embedded.modelNumber);
+            assert.isTrue(modelChanged);
+            assert.isTrue(embeddedChanged);
+            
+        });
+
     });
+
 });

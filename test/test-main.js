@@ -15,7 +15,7 @@ Object.keys(window.__karma__.files).forEach(function (file) {
 
 window.TestCase = function () {};
 
-requirejs.config({
+require.config({
     // Karma serves files from '/base'
     baseUrl: '/base',
 

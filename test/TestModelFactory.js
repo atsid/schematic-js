@@ -12,7 +12,6 @@ define([
 
         var factory;
 
-        //reset the factory each time
         beforeEach(function () {
             factory = new ModelFactory({
                 resolver: function () {

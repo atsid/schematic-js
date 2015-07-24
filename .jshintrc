@@ -1,5 +1,6 @@
 {
     "boss":      true,
+    "browser":   true,
     "node":      true,
     "strict":    true,
     "white":     true,
