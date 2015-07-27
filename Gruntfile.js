@@ -1,72 +1,55 @@
-/**
- * User: kevin.convy
- * Date: 1/28/14
- * Time: 10:48 AM
- * Grunt build for library upkeep tasks
- */
+'use strict';
 
 module.exports = function (grunt) {
+
     grunt.initConfig({
-        // Require js optimizer
+        jshint: {
+            src: ['js/**/*.js', 'test/**/*.js', 'example/**/*.js', '!node_modules/**/*.*', '!**/lib/**/*.js', '!js/declare.js'],
+            options: {
+                jshintrc: '.jshintrc'
+            }
+        },
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js',
+                singleRun: true
+            }
+        },
+        watch: {
+            js: {
+                files: ['**/*.js', '!**/node_modules/**'],
+                tasks: ['lint', 'test']
+            }
+        },
         requirejs: {
             compile: {
                 options: {
-                    baseUrl: "./src/main",
+                    baseUrl: './js',
                     paths: {
-                        schematic: "."
+                        schematic: '.'
                     },
-                    name: "schematic/fullpack",
-                    out: "schematic-1.0.9-min.js"
-                }
-            }
-        },
-
-        // test server
-        connect: {
-            test : {
-                options: {
-                    port : 9001
-                }
-            }
-        },
-
-        // jasmine template
-        jasmine: {
-            test: {
-                src: 'src/main/**/*.js',
-                options: {
-                    specs: 'src/test/specs/*.spec.js',
-                    display: 'full',
-                    helpers: '',
-                    host: 'http://127.0.0.1:9001/',
-                    template: require('grunt-template-jasmine-requirejs'),
-                    templateOptions: {
-                        requireConfig: {
-                            baseUrl: "src",
-                            paths: {
-                                schematic: "main",
-                                external: "test/javascript/third-party",
-                                test: "test/javascript",
-                                TestData: "test/data",
-                                poly: "../bower_components/poly"
-                            }
-                        }
-                    }
+                    include: [
+                        './ModelFactory',
+                        'plugins/ConditionallyRequiredValidationPlugin',
+                        'plugins/FutureDateValidationPlugin',
+                        'plugins/LuhnValidationPlugin',
+                        'plugins/RegExpValidationPlugin',
+                        'plugins/SchemaValidationPlugin'
+                    ],
+                    out: 'schematic-min.js'
                 }
             }
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
-    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('test', [
-        'connect',
-        'jasmine'
-    ]);
+    grunt.registerTask('lint', ['jshint']);
+    grunt.registerTask('test', ['karma']);
+    grunt.registerTask('compile', ['requirejs']);
+    grunt.registerTask('default', ['lint', 'test']);
 
-    grunt.registerTask('compile', [
-        'requirejs:compile'
-    ]);
 };
