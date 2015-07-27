@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 module.exports = function (grunt) {
 
     grunt.initConfig({
         jshint: {
-            src: ['js/**/*.js', 'test/**/*.js', 'example/**/*.js', '!node_modules/**/*.*', '!**/lib/**/*.js', '!test/specs/**/*.js', '!js/declare.js'],
+            src: ['js/**/*.js', 'test/**/*.js', 'example/**/*.js', '!node_modules/**/*.*', '!**/lib/**/*.js', '!js/declare.js'],
             options: {
                 jshintrc: '.jshintrc'
             }
@@ -24,12 +24,19 @@ module.exports = function (grunt) {
         requirejs: {
             compile: {
                 options: {
-                    baseUrl: "./js",
+                    baseUrl: './js',
                     paths: {
-                        schematic: "."
+                        schematic: '.'
                     },
-                    name: "schematic/ModelFactory",
-                    out: "schematic-min.js"
+                    include: [
+                        './ModelFactory',
+                        'plugins/ConditionallyRequiredValidationPlugin',
+                        'plugins/FutureDateValidationPlugin',
+                        'plugins/LuhnValidationPlugin',
+                        'plugins/RegExpValidationPlugin',
+                        'plugins/SchemaValidationPlugin'
+                    ],
+                    out: 'schematic-min.js'
                 }
             }
         }
