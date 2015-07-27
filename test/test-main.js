@@ -13,8 +13,6 @@ Object.keys(window.__karma__.files).forEach(function (file) {
     }
 });
 
-window.TestCase = function () {};
-
 require.config({
     // Karma serves files from '/base'
     baseUrl: '/base',
