@@ -10,6 +10,8 @@ define([
      * @param properties the set of properties to limit validation to.
      */
     return function (schema, instance, properties) {
-        return;
+        return {
+            valid: true
+        };
     };
 });

@@ -71,7 +71,7 @@ define([
             model.set('optionalprop', 'optional');
 
             var serialized = JSON.stringify(model);
-            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\",\"optionalprop\":\"optional\"}", serialized);
+            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\",\"optionalprop\":\"optional\"}", serialized); //jshint ignore:line
 
         });
 
@@ -80,7 +80,7 @@ define([
             model.set('modelNumber', '1234');
 
             var serialized = JSON.stringify(model);
-            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\"}", serialized);
+            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\"}", serialized); //jshint ignore:line
 
         });
 

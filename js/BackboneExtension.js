@@ -58,6 +58,7 @@ define([
                 // validation needs to apply to the whole model.
                 var instance = new Backbone.Model(this.toJSON());
                 instance.set(attributes);
+                console.log('RUNNING VALIDATOR');
                 return Validator(this.jsonschema, instance.toJSON(), attributes);
             }
 

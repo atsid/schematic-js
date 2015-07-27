@@ -87,7 +87,7 @@ define([
             success = model.save({'noattr': 'shouldntset'}, {
                 validate: true
             });
-            assert.isTrue(success);
+            assert.isDefined(success);
 
         });
 
