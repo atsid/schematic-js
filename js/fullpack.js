@@ -1,9 +1,9 @@
 define([
-    "./ModelFactory",
-    "plugins/ConditionallyRequiredValidationPlugin",
-    "plugins/FutureDateValidationPlugin",
-    "plugins/LuhnValidationPlugin",
-    "plugins/RegExpValidationPlugin",
-    "plugins/SchemaValidationPlugin"
+    './ModelFactory',
+    'plugins/ConditionallyRequiredValidationPlugin',
+    'plugins/FutureDateValidationPlugin',
+    'plugins/LuhnValidationPlugin',
+    'plugins/RegExpValidationPlugin',
+    'plugins/SchemaValidationPlugin'
 ], function () {
 });

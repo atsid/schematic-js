@@ -40,7 +40,7 @@ define([
             if (encode) {
 
                 if (obj) {
-                    logger.call(alternateConsole, message + " --> " + JSON.stringify(obj));
+                    logger.call(alternateConsole, message + ' --> ' + JSON.stringify(obj));
                 } else {
                     logger.call(alternateConsole, message);
                 }
@@ -63,7 +63,7 @@ define([
 
         /**
          * Add a new log plugin that messages will be pushed to in addition to the default logger.
-         * Plugins should have a single method "log", which accepts a level, message, optional object, and optional encode boolean.
+         * Plugins should have a single method 'log', which accepts a level, message, optional object, and optional encode boolean.
          */
         this.addPlugin = function (plugin) {
             plugins.push(plugin);
@@ -78,7 +78,7 @@ define([
          */
         this.trace = function (message, obj, encode) {
             if (logLevel <= levels.TRACE) {
-                doLog("debug", message, obj, encode, arguments);
+                doLog('debug', message, obj, encode, arguments);
             }
         };
 
@@ -91,7 +91,7 @@ define([
          */
         this.debug = function (message, obj, encode) {
             if (logLevel <= levels.DEBUG) {
-                doLog("debug", message, obj, encode, arguments);
+                doLog('debug', message, obj, encode, arguments);
             }
         };
 
@@ -104,7 +104,7 @@ define([
          */
         this.info = function (message, obj, encode) {
             if (logLevel <= levels.INFO) {
-                doLog("info", message, obj, encode, arguments);
+                doLog('info', message, obj, encode, arguments);
             }
         };
 
@@ -117,7 +117,7 @@ define([
          */
         this.warn = function (message, obj, encode) {
             if (logLevel <= levels.WARN) {
-                doLog("warn", message, obj, encode, arguments);
+                doLog('warn', message, obj, encode, arguments);
             }
         };
 
@@ -130,7 +130,7 @@ define([
          */
         this.error = function (message, obj, encode) {
             if (logLevel <= levels.ERROR) {
-                doLog("error", message, obj, encode, arguments);
+                doLog('error', message, obj, encode, arguments);
             }
         };
 

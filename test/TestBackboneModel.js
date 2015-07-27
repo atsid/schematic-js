@@ -1,7 +1,7 @@
 define([
-    "schematic/ModelFactory",
-    "TestData/SimpleTestModelSchema",
-    "schematic/BackboneExtension"
+    'schematic/ModelFactory',
+    'TestData/SimpleTestModelSchema',
+    'schematic/BackboneExtension'
 ], function (
     ModelFactory,
     SimpleTestModelSchema
@@ -36,35 +36,35 @@ define([
             var success = true;
 
             // should not be able to set an attribute that isn't on the schema
-            model.set("noattr", "shouldntset", {validate: true});
-            assert.notEqual("shouldntset", model.get("noattr"));
+            model.set('noattr', 'shouldntset', {validate: true});
+            assert.notEqual('shouldntset', model.get('noattr'));
             assert.isFalse(model.isValid());
 
             // required attributes should be set before save.
-            success = model.save({"noattr": "shouldntset"}, {
+            success = model.save({'noattr': 'shouldntset'}, {
                 validate: true
             });
             assert.isFalse(success);
 
             // should be able to get and set all attributes that are in the
             // schema.
-            model.set("modelNumber", "1111");
-            assert.equal("1111", model.get("modelNumber"));
-            assert.equal("1111", model.modelNumber);
+            model.set('modelNumber', '1111');
+            assert.equal('1111', model.get('modelNumber'));
+            assert.equal('1111', model.modelNumber);
 
-            model.modelNumber = "2222";
-            assert.equal("2222", model.get("modelNumber"));
-            assert.equal("2222", model.modelNumber);
+            model.modelNumber = '2222';
+            assert.equal('2222', model.get('modelNumber'));
+            assert.equal('2222', model.modelNumber);
 
-            model.set("optionalprop", "optional");
-            assert.equal("optional", model.get("optionalprop"));
-            assert.equal("optional", model.optionalprop);
+            model.set('optionalprop', 'optional');
+            assert.equal('optional', model.get('optionalprop'));
+            assert.equal('optional', model.optionalprop);
 
             // shouldn't be able to set longer than 4 chars for modelNumber.
-            model.set("modelNumber", "55555", {validate: true});
-            assert.notEqual("55555", model.get("modelNumber"));
-            model.modelNumber = "55555";
-            assert.notEqual("55555", model.modelNumber);
+            model.set('modelNumber', '55555', {validate: true});
+            assert.notEqual('55555', model.get('modelNumber'));
+            model.modelNumber = '55555';
+            assert.notEqual('55555', model.modelNumber);
 
         });
 
@@ -74,20 +74,20 @@ define([
 
             // should be able to get and set all attributes that are in the
             // schema.
-            model.set("modelNumber", "1111");
-            assert.equal("1111", model.get("modelNumber"));
-            assert.equal("1111", model.modelNumber);
+            model.set('modelNumber', '1111');
+            assert.equal('1111', model.get('modelNumber'));
+            assert.equal('1111', model.modelNumber);
 
-            model.modelNumber = "2222";
-            assert.equal("2222", model.get("modelNumber"));
-            assert.equal("2222", model.modelNumber);
+            model.modelNumber = '2222';
+            assert.equal('2222', model.get('modelNumber'));
+            assert.equal('2222', model.modelNumber);
 
-            model.set("optionalprop", "optional");
-            assert.equal("optional", model.get("optionalprop"));
-            assert.equal("optional", model.optionalprop);
+            model.set('optionalprop', 'optional');
+            assert.equal('optional', model.get('optionalprop'));
+            assert.equal('optional', model.optionalprop);
 
             // should be able to save...
-            success = model.save({"noattr": "shouldntset"}, {
+            success = model.save({'noattr': 'shouldntset'}, {
                 validate: true
             });
             assert.isTrue(success);

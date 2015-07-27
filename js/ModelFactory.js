@@ -4,10 +4,10 @@
  * will create a schema-based Backbone model.
  */
 define([
-    "./log",
-    "./SchemaResolver",
-    "./BackboneExtension",
-    "./util"
+    './log',
+    './SchemaResolver',
+    './BackboneExtension',
+    './util'
 ], function (
     logger,
     SchemaResolver,
@@ -49,12 +49,12 @@ define([
 
                         var success = false;
                         if (propertyCache[prop]) {
-                            logger.debug("schema: " + schema.id + " contains property: " + prop);
+                            logger.debug('schema: ' + schema.id + ' contains property: ' + prop);
                             success = true;
                         } else {
-                            logger.debug("schema: " + schema.id + " does not contain property: " + prop);
+                            logger.debug('schema: ' + schema.id + ' does not contain property: ' + prop);
                             if (!noThrow) {
-                                throw new Error(prop + " not defined in  " + schema.id);
+                                throw new Error(prop + ' not defined in  ' + schema.id);
                             }
                         }
                         return success;
@@ -78,11 +78,11 @@ define([
                             lastError,
                             failure = true;
 
-                        logger.debug("Checking if property: " + prop + " is valid to set");
+                        logger.debug('Checking if property: ' + prop + ' is valid to set');
                         // run through validators stopping at first failure
                         if (isValidProperty(prop, noThrow)) {
                             if (thisFactory.config.validatedSet || forceValidation) {
-                                logger.debug("Running validators on " + prop);
+                                logger.debug('Running validators on ' + prop);
                                 failure = validators.some(function (val, idx, arr) {
                                     if (val.propertyPattern.test(prop)) {
                                         lastError = val.validate(prop, that, value, schema);
@@ -105,8 +105,8 @@ define([
                         });
                     },
                     walkExtends = function (schema, operation) {
-                        if (schema["extends"]) {
-                            walkExtends(schema["extends"], operation);
+                        if (schema['extends']) {
+                            walkExtends(schema['extends'], operation);
                         }
                         operation(schema);
                     };
@@ -119,7 +119,7 @@ define([
                 /*
                  * Takes id from schema
                  */
-                Object.defineProperty(that, "schemaId", {
+                Object.defineProperty(that, 'schemaId', {
                     get: function () {
                         return schema.id;
                     },
@@ -129,7 +129,7 @@ define([
                 /*
                  * Last Errors is protected and not visible.
                  */
-                Object.defineProperty(that, "lastErrors", {
+                Object.defineProperty(that, 'lastErrors', {
                     get: function () {
                         return lastErrors;
                     },
@@ -150,7 +150,7 @@ define([
                 /**
                  * Expose validation function. If prop is undefined
                  *  validate the whole top-level model.
-                 * After completion "lastErrors" will contain an object
+                 * After completion 'lastErrors' will contain an object
                  * matching property names to errors.
                  *
                  * @param prop - the name of the property to set
@@ -165,7 +165,7 @@ define([
                     if (!prop) {
                         errors = {};
                         Object.keys(propertyCache).forEach(function (key) {
-                            logger.debug("Validating " + key + " with " + data[key]);
+                            logger.debug('Validating ' + key + ' with ' + data[key]);
                             if (!isValidSet(key, data[key], true, true)) {
                                 errors[key] = lastErrors;
                                 success = false;
@@ -190,21 +190,21 @@ define([
                 this.get = function (prop) {
                     var ret, property = propertyCache[prop];
                     if (isValidProperty(prop)) {
-                        if (property.type === "array" && basedOn) {
+                        if (property.type === 'array' && basedOn) {
                             ret = [];
                             (data[prop] || []).forEach(function (obj, idx) {
                                 if (obj) {
-                                    if (typeof obj == "object" && !property.items.type) {
+                                    if (typeof obj == 'object' && !property.items.type) {
                                         ret.push(thisFactory.getModel(property.items, obj));
                                     } else {
                                         ret.push(obj);
                                     }
                                 }
                             }, this);
-                        } else if ((property.type === "boolean") && ((data[prop] === undefined) || (data[prop] === false))) {  
+                        } else if ((property.type === 'boolean') && ((data[prop] === undefined) || (data[prop] === false))) {  
                             ret = false; 
                         } else {
-                            ret = (basedOn && property.type === "object" ? thisFactory.getModel(property, data[prop]) : data[prop]);
+                            ret = (basedOn && property.type === 'object' ? thisFactory.getModel(property, data[prop]) : data[prop]);
                         }
                         return ret;
                     }
@@ -250,7 +250,7 @@ define([
                  * @param {object} instance the instance to copy from.
                  * @param {object} options an object like:
                  * {
-                 *    shallowModels: "true if sub-models should be copied by reference instead of recursively".
+                 *    shallowModels: 'true if sub-models should be copied by reference instead of recursively'.
                  * }
                  */
                 this.copyFrom = function (instance, options) {
@@ -288,7 +288,7 @@ define([
                         var anotherModel;
                         if (instance[val]) {
                             if (instance[val].schemaId) {
-                                logger.debug("Getting and initializing model with schema ID: " + instance[val].schemaId);
+                                logger.debug('Getting and initializing model with schema ID: ' + instance[val].schemaId);
                                 anotherModel = thisFactory.getModel(instance[val].schemaId);
                                 anotherModel.initialize(instance[val]);
                                 that.set(val, anotherModel);
@@ -356,8 +356,8 @@ define([
          */
         this.getModelBySchema = function (schema, obj, options) {
             var model;
-            logger.debug("Getting new model with schema ID: " + schema.id);
-            if (typeof BackboneModel === "function") {
+            logger.debug('Getting new model with schema ID: ' + schema.id);
+            if (typeof BackboneModel === 'function') {
                 model = new BackboneModel(obj, {
                     validate: true,
                     'schema': schema,
@@ -420,7 +420,7 @@ define([
          */
         this.getModelByName = function (name, obj, options) {
             var schema = this.getSchema(name);
-            logger.debug("Getting new model by name: " + name + " using schema: " + schema);
+            logger.debug('Getting new model by name: ' + name + ' using schema: ' + schema);
             return this.getModelBySchema(schema, obj, options);
         };
 
@@ -436,7 +436,7 @@ define([
             } else {
                 newModel = this.getModel(model);
             }
-            logger.debug("Initializing new model with schema ID: " + newModel.schemaId);
+            logger.debug('Initializing new model with schema ID: ' + newModel.schemaId);
             newModel.initialize(instance);
             return newModel;
         };

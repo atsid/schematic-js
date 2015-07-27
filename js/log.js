@@ -2,10 +2,10 @@
  * Log configuration for convenient re-mapping.
  */
 define([
-    "./Logger"
+    './Logger'
 ], function (
     Logger
 ) {
     'use strict';
-    return new Logger("debug");
+    return new Logger('debug');
 });

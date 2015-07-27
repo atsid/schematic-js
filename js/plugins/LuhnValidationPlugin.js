@@ -3,7 +3,7 @@
  * Plugin to validate a number using the Luhn algorithm.
  */
 define([
-    "../util"
+    '../util'
 ], function (
     util
 ) {
@@ -12,7 +12,7 @@ define([
 
     var module = function (config) {
 
-        this.message = {code: 0, message: "Invalid number"};
+        this.message = {code: 0, message: 'Invalid number'};
         util.mixin(this, config);
 
         function isNumeric(n) {

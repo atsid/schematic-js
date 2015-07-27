@@ -3,11 +3,11 @@
  * Plugin to selectively validate properties against a json schema
  * based on the values of another property in the schema.
  * {
- *    requiredMessage: {code:123, message: "Field required");
+ *    requiredMessage: {code:123, message: 'Field required');
  * }
  */
 define([
-    "../util"
+    '../util'
 ], function (
     util
 ) {
@@ -16,13 +16,13 @@ define([
 
     var findProperty = function (schema, prop) {
             var ret = schema && schema.properties && schema.properties[prop];
-            if (!ret && schema["extends"]) {
-                ret = findProperty(schema["extends"], prop);
+            if (!ret && schema['extends']) {
+                ret = findProperty(schema['extends'], prop);
             }
             return ret;
         },
         module = function (config) {
-            var defaultMessage = {code: 0, message: "Field is required."};
+            var defaultMessage = {code: 0, message: 'Field is required.'};
             util.mixin(this, config);
 
 

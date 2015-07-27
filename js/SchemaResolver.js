@@ -22,7 +22,7 @@ define([
             if (!(subobj.tag && subobj.tag.resolved)) {
                 Object.keys(subobj).forEach(function (key, idx, obj) {
                     var val = subobj[key], value;
-                    if (key === "$ref") {
+                    if (key === '$ref') {
                         resolvers.some(function (res) {
                             value = res(val);
                             return value;
@@ -32,7 +32,7 @@ define([
                             this.resolveRefs(value, subobj, key);
                         }
                         parent[parentKey] = value;
-                    } else if (typeof val === "object" && !val.resolved) {
+                    } else if (typeof val === 'object' && !val.resolved) {
                         this.resolveRefs(val, subobj, key);
                     }
 

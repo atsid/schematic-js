@@ -3,8 +3,8 @@
  * that extends Backbone.Model and adds json schema support.
  */
 define([
-    "./Validator",
-    "./log"
+    './Validator',
+    './log'
 ], function (
     Validator,
     logger
@@ -18,7 +18,7 @@ define([
         sync = Backbone.sync;
         Backbone.sync = function (method, model, options) {
             if (model instanceof Backbone.SchematicModel) {
-                logger.debug(method + " : " + model + " : " + options);
+                logger.debug(method + ' : ' + model + ' : ' + options);
             } else {
                 return sync(method, model, options);
             }

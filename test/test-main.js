@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var allTestFiles = [],
     pathToModule = function (path) {
@@ -20,14 +20,14 @@ require.config({
     baseUrl: '/base',
 
     paths: {
-        schematic: "js",
-        external: "test/lib",
-        test: "test",
-        TestData: "test/data"
+        schematic: 'js',
+        external: 'test/lib',
+        test: 'test',
+        TestData: 'test/data'
     },
     map: {
-        "*": {
-            "schematic/Validator": "test/Validator"
+        '*': {
+            'schematic/Validator': 'test/Validator'
         }
     },
 

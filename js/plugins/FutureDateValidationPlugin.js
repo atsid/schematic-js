@@ -3,7 +3,7 @@
  * Validate that the given field is a date and is in the future.
  */
 define([
-    "../util"
+    '../util'
 ], function (
     util
 ) {
@@ -11,7 +11,7 @@ define([
     'use strict';
 
     var module = function (config) {
-        this.message = {code: 0, message: "Date is not in the future"};
+        this.message = {code: 0, message: 'Date is not in the future'};
         util.mixin(this, config);
 
         this.validate = function (property, instance, newValue, schema) {

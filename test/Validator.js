@@ -1,5 +1,5 @@
 define([
-    "external/validate"
+    'external/validate'
 ], function (
     Validator
 ) {

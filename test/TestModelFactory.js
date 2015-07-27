@@ -1,8 +1,8 @@
 define([
-    "schematic/ModelFactory",
-    "schematic/plugins/SchemaValidationPlugin",
+    'schematic/ModelFactory',
+    'schematic/plugins/SchemaValidationPlugin',
     'TestData/BaseSchema',
-    "TestData/SimpleTestModelSchema"
+    'TestData/SimpleTestModelSchema'
 ], function (
     ModelFactory,
     SchemaValidationPlugin,
@@ -27,7 +27,7 @@ define([
             });
 
             it('get model by name', function () {
-                var model = factory.getModel("TestData/SimpleTestModelSchema");
+                var model = factory.getModel('TestData/SimpleTestModelSchema');
                 assert.isDefined(model);
             });
 
@@ -51,17 +51,17 @@ define([
                 model = factory.getModel(BaseSchema);
             });
 
-            it("can return a model based on a schema.", function () {
-                model.set('modelNumber', "1234");
-                assert.equal("1234", model.modelNumber);
+            it('can return a model based on a schema.', function () {
+                model.set('modelNumber', '1234');
+                assert.equal('1234', model.modelNumber);
             });
 
-            it("allows unvalidated set by default", function () {
-                model.set('modelNumber', "12345678");
-                assert.equal("12345678", model.modelNumber);
+            it('allows unvalidated set by default', function () {
+                model.set('modelNumber', '12345678');
+                assert.equal('12345678', model.modelNumber);
             });
 
-            it("can be configured to disallow 'set' based on validation.", function () {
+            it('can be configured to disallow "set" based on validation.', function () {
                 factory = new ModelFactory({
                     validatedSet: true
                 });
@@ -70,15 +70,15 @@ define([
                     modelPattern: /.*/
                 }));
                 model = factory.getModel(BaseSchema);
-                model.set('modelNumber', "1234");
-                assert.equal("1234", model.modelNumber);
-                model.set('modelNumber', "12345678");
-                assert.equal("1234", model.modelNumber);
+                model.set('modelNumber', '1234');
+                assert.equal('1234', model.modelNumber);
+                model.set('modelNumber', '12345678');
+                assert.equal('1234', model.modelNumber);
             });
 
-            it("allows explicit validation of the entire model", function () {
-                model.set('modelNumber', "12345678");
-                assert.equal("12345678", model.modelNumber);
+            it('allows explicit validation of the entire model', function () {
+                model.set('modelNumber', '12345678');
+                assert.equal('12345678', model.modelNumber);
                 model.validate();
                 assert.isDefined(model.lastErrors.modelNumber);
             });
