@@ -1,4 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/atsid/schematic-js/badges/gpa.svg)](https://codeclimate.com/github/atsid/schematic-js)
+[![Build Status](https://travis-ci.org/atsid/schematic-js.svg?branch=master)](https://travis-ci.org/atsid/schematic-js)
 [![Dependency Status](https://david-dm.org/atsid/schematic-js.svg)](https://david-dm.org/atsid/schematic-js)
 
 #schematic-js
@@ -47,10 +48,21 @@ require([
 ```
 
 ## Integration
+
 ### Validation
 Schematic provides serveral lightweight plugins for field-level validation, including regular expression validation, conditional field values (not supported by JSON schema) and Luhn validation. However, the current version does relies on third party validators to supply full-model JSONSchema validation. The examples use a reference implementation from json-schema (https://github.com/kriszyp/json-schema.git), but other validators can easily be injected via AMD's module mapping.
+
 ### Backbone
 The library provides backbone (https://github.com/documentcloud/backbone.git) integration by creating a Backbone.SchematicModel that extends Backbone.Model. SchematicModel implements validation and adds property definitions defined on the schema to the model.
+
+## Development
+
+Builds are done with grunt.
+
+1. Install node.js if you don't have it
+1. Install grunt-cli if you don't have it `npm install -g grunt-cli`
+1. Install deps `npm install`
+1. Run linter/tests `npm test`
 
 ##License
 This software is licensed under the Apache 2.0 license (http://www.apache.org/licenses/LICENSE-2.0).
