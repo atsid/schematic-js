@@ -5,7 +5,8 @@ define([
     'schematic/plugins/RegExpValidationPlugin',
     'schematic/plugins/FutureDateValidationPlugin',
     'TestData/SimpleTestModelSchema',
-    'TestData/ExtendedSchema'
+    'TestData/ExtendedSchema',
+    'TestData/BaseSchema'
 ], function (
     ModelFactory,
     SchemaValidationPlugin,
@@ -13,7 +14,8 @@ define([
     RegExpValidationPlugin,
     FutureDateValidationPlugin,
     SimpleTestModelSchema,
-    ExtendedModelSchema
+    ExtendedModelSchema,
+    BaseSchema
 ) {
 
     'use strict';
@@ -24,6 +26,15 @@ define([
 
         beforeEach(function () {
             factory = new ModelFactory({
+                resolver: function (name) {
+                    if (name.indexOf('ExtendedSchema') > -1) {
+                        return ExtendedModelSchema;
+                    } else if (name.indexOf('BaseSchema') > -1) {
+                        return BaseSchema;
+                    } else {
+                        return SimpleTestModelSchema;
+                    }
+                },
                 ignoreBackbone: true,
                 validatedSet: true
             });
