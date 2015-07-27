@@ -23,7 +23,9 @@ define([
         var factory;
 
         beforeEach(function () {
-            factory = new ModelFactory();
+            factory = new ModelFactory({
+                ignoreBackbone: true
+            });
         });
 
         describe('validator execution matching', function () {

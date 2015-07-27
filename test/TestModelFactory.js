@@ -22,7 +22,8 @@ define([
                 factory = new ModelFactory({
                     resolver: function () {
                         return SimpleTestModelSchema;
-                    }
+                    },
+                    ignoreBackbone: true
                 });
             });
 
@@ -43,7 +44,9 @@ define([
             var factory, model;
 
             beforeEach(function () {
-                factory = new ModelFactory();
+                factory = new ModelFactory({
+                    ignoreBackbone: true
+                });
                 factory.addValidator(new SchemaValidationPlugin({
                     propertyPattern: /.*/,
                     modelPattern: /.*/
@@ -63,7 +66,8 @@ define([
 
             it('can be configured to disallow "set" based on validation.', function () {
                 factory = new ModelFactory({
-                    validatedSet: true
+                    validatedSet: true,
+                    ignoreBackbone: true
                 });
                 factory.addValidator(new SchemaValidationPlugin({
                     propertyPattern: /.*/,

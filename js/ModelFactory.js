@@ -357,10 +357,12 @@ define([
         this.getModelBySchema = function (schema, obj, options) {
             var model;
             logger.debug('Getting new model with schema ID: ' + schema.id);
-            if (typeof BackboneModel === 'function') {
+            //if Backbone has been loaded by the app, use it by default unless the config says not to
+            //(we may not always want our model based on Backbone, even if it may be used elsewhere in the app)
+            if (typeof BackboneModel === 'function' && !this.config.ignoreBackbone) {
                 model = new BackboneModel(obj, {
                     validate: true,
-                    'schema': schema,
+                    schema: schema,
                     serviceFactory: this.config.serviceFactory
                 });
             } else {

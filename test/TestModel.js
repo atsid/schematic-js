@@ -22,7 +22,8 @@ define([
             factory = new ModelFactory({
                 resolver: function () {
                     return SimpleTestModelSchema;
-                }
+                },
+                ignoreBackbone: true
             });
             model = factory.getModel(SimpleTestModelSchema);
         });
@@ -94,7 +95,8 @@ define([
                         } else {
                             return BaseSchema;
                         }
-                    }
+                    },
+                    ignoreBackbone: true
                 }),
                 extendedModel = factory.getModelByName('ExtendedSchema');
 
@@ -120,7 +122,8 @@ define([
                         } else {
                             return SimpleTestModelSchema;
                         }
-                    }
+                    },
+                    ignoreBackbone: true
                 }),
                 embeddedModel = factory.getModelByName('EmbeddedSchema', undefined, {createSubModels: true});
 
@@ -139,7 +142,8 @@ define([
                         } else {
                             return SimpleTestModelSchema;
                         }
-                    }
+                    },
+                    ignoreBackbone: true
                 }),
                 modelChanged = false,
                 embeddedChanged = false,
@@ -183,7 +187,8 @@ define([
                         } else {
                             return SimpleTestModelSchema;
                         }
-                    }
+                    },
+                    ignoreBackbone: true
                 }),
                 modelChanged = false,
                 embeddedChanged = false,
