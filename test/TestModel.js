@@ -49,12 +49,10 @@ define([
             assert.equal('1234', prop);
         });
 
-        it('property accessors', function () {
+        it('property accessors disallowed in strict mode', function () {
 
-            model.modelNumber = '1234';
-            var prop = model.modelNumber;
+            assert.throws(function () { model.modelNumber = '1234'; }, 'Attempted to assign to readonly property.');
 
-            assert.equal('1234', prop);
         });
 
         it('initialize method uses existing model as template', function () {
@@ -69,20 +67,20 @@ define([
 
         it('serialized model (JSON.stringify) contains expected properties from schema', function () {
 
-            model.modelNumber = '1234';
-            model.optionalprop = 'optional';
+            model.set('modelNumber', '1234');
+            model.set('optionalprop', 'optional');
 
             var serialized = JSON.stringify(model);
-            assert.equal('{\'schemaId\':\'TestData/SimpleTestModelSchema\',\'modelNumber\':\'1234\',\'optionalprop\':\'optional\'}', serialized);
+            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\",\"optionalprop\":\"optional\"}", serialized);
 
         });
 
         it('serialized model leaves out unset optional properties', function () {
 
-            model.modelNumber = '1234';
+            model.set('modelNumber', '1234');
 
             var serialized = JSON.stringify(model);
-            assert.equal('{\'schemaId\':\'TestData/SimpleTestModelSchema\',\'modelNumber\':\'1234\'}', serialized);
+            assert.equal("{\"schemaId\":\"TestData/SimpleTestModelSchema\",\"modelNumber\":\"1234\"}", serialized);
 
         });
 
@@ -100,13 +98,13 @@ define([
                 }),
                 extendedModel = factory.getModelByName('ExtendedSchema');
 
-            extendedModel.modelNumber = '1234';
+            extendedModel.set('modelNumber', '1234');
             assert.equal('1234', extendedModel.modelNumber);
-            extendedModel.optionalprop = 'optional';
+            extendedModel.set('optionalprop', 'optional');
             assert.equal('optional', extendedModel.optionalprop);
-            extendedModel.explanation = 'explanation';
+            extendedModel.set('explanation', 'explanation');
             assert.equal('explanation', extendedModel.explanation);
-            extendedModel.comment = 'comment';
+            extendedModel.set('comment', 'comment');
             assert.equal('comment', extendedModel.comment);
             
         });
@@ -150,10 +148,10 @@ define([
                 model = factory.getModelByName('EmbeddedSchema', undefined, {createSubModels: true}),
                 modelCopy = factory.getModelByName('EmbeddedSchema', undefined, {createSubModels: true});
 
-            model.explanation = 'Should be over-written';
-            modelCopy.explanation = 'Should over-write';
-            model.embedded.modelNumber = '1111';
-            modelCopy.embedded.modelNumber = '2222';
+            model.set('explanation', 'Should be over-written');
+            modelCopy.set('explanation', 'Should over-write');
+            model.embedded.set('modelNumber', '1111');
+            modelCopy.embedded.set('modelNumber', '2222');
 
             model.onChange('explanation', function () {
                 modelChanged = true;

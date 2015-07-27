@@ -160,8 +160,7 @@ define([
                 this.validate = function (prop, value) {
                     var ret,
                         success = true,
-                        errors,
-                        lastErrors;
+                        errors;
                     if (!prop) {
                         errors = {};
                         Object.keys(propertyCache).forEach(function (key) {

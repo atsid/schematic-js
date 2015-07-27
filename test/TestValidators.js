@@ -24,7 +24,8 @@ define([
 
         beforeEach(function () {
             factory = new ModelFactory({
-                ignoreBackbone: true
+                ignoreBackbone: true,
+                validatedSet: true
             });
         });
 
@@ -54,8 +55,9 @@ define([
                 factory.addValidator(limitedValidator);
 
                 model = factory.getModel(SimpleTestModelSchema);
-                model.modelNumber = '12345';
-                model.optionalprop = 'optional';
+                model.set('modelNumber', '12345');
+                model.set('optionalprop', 'optional');
+
                 // validator should have been called twice.
                 assert.equal(2, count);
                 // limitedValidator should have been called only once.
@@ -82,11 +84,11 @@ define([
 
                 var model = factory.getModel(ExtendedModelSchema);
                 // should succeed.
-                model.modelNumber = '12345';
-                assert.equal('12345', model.modelNumber);
+                model.set('modelNumber', '1234');
+                assert.equal('1234', model.modelNumber);
                 // should not succeed because model number is required.
-                model.modelNumber = '';
-                assert.equal('12345', model.modelNumber);
+                model.set('modelNumber', '');
+                assert.equal('1234', model.modelNumber);
                 assert.equal(1, model.lastErrors.length);
                 // test validate method directly
                 assert.equal(1, model.validate('modelNumber', '').length);
@@ -110,16 +112,16 @@ define([
                 var model = factory.getModel(SimpleTestModelSchema);
 
                 // should succeed.
-                model.creditCardNumber = '4111111111111111';
+                model.set('creditCardNumber', '4111111111111111');
                 assert.equal(model.creditCardNumber, '4111111111111111');
 
                 // should not succeed because credit card number does not pass the Luhn test
-                model.creditCardNumber = '1234123412341234';
+                model.set('creditCardNumber', '1234123412341234');
                 assert.equal(model.creditCardNumber, '4111111111111111');
                 assert.equal(model.lastErrors.length, 1);
 
                 // should not succeed because credit card number is not numeric
-                model.creditCardNumber = 'abcd';
+                model.set('creditCardNumber', 'abcd');
                 assert.equal(model.creditCardNumber, '4111111111111111');
                 assert.equal(model.lastErrors.length, 1);
 
