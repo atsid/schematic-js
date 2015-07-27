@@ -47,7 +47,7 @@ define([
             },
 
             /**
-             * Override Backbone model validation method to do valiation
+             * Override Backbone model validation method to do validation
              * based on JSON Schema.
              * @param attributes - specific attributes to validate
              * @param options

@@ -52,9 +52,10 @@ define([
             assert.equal('1111', model.get('modelNumber'));
             assert.equal('1111', model.modelNumber);
 
+            //direct assignment is disallowed with get/set in place
             model.modelNumber = '2222';
-            assert.equal('2222', model.get('modelNumber'));
-            assert.equal('2222', model.modelNumber);
+            assert.equal('1111', model.get('modelNumber'));
+            assert.equal('1111', model.modelNumber);
 
             model.set('optionalprop', 'optional');
             assert.equal('optional', model.get('optionalprop'));
@@ -77,10 +78,6 @@ define([
             model.set('modelNumber', '1111');
             assert.equal('1111', model.get('modelNumber'));
             assert.equal('1111', model.modelNumber);
-
-            model.modelNumber = '2222';
-            assert.equal('2222', model.get('modelNumber'));
-            assert.equal('2222', model.modelNumber);
 
             model.set('optionalprop', 'optional');
             assert.equal('optional', model.get('optionalprop'));
