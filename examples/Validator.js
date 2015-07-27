@@ -1,5 +1,5 @@
 define([
-    'example/validate'
+    'lib/validate'
 ], function (
     Validator
 ) {

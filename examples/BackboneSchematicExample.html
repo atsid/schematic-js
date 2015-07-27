@@ -20,9 +20,10 @@ Most of the code is setting up AMD (which becomes negligible in larger projects)
         require.config({
             baseUrl: './',
             paths: {
-                schematic: '../main', // schematic-js code
+                schematic: '../js', // schematic-js code
                 schema: 'schema', // the example schema
-                example: '.'
+                example: '.',
+                lib: 'lib'
             },
             // remap to use a third party validator.
             map: {
@@ -41,6 +42,7 @@ Most of the code is setting up AMD (which becomes negligible in larger projects)
                 ModelFactory,
                 ExampleSchema
         ) {
+            'use strict';
             // Create a model factory.
             var mfact = new ModelFactory({
                     // 'resolver' is used by the factory to find schemas based on names.
