@@ -98,6 +98,7 @@ define([
                         return !failure;
                     },
                     cacheProperties = function (schema, cache) {
+                        logger.debug('caching properties', schema.properties);
                         Object.keys(schema.properties).forEach(function (prop) {
                             if (schema.properties[prop]) {
                                 cache[prop] = schema.properties[prop];
