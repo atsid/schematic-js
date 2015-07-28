@@ -1,6 +1,7 @@
 [![Code Climate](https://codeclimate.com/github/atsid/schematic-js/badges/gpa.svg)](https://codeclimate.com/github/atsid/schematic-js)
 [![Build Status](https://travis-ci.org/atsid/schematic-js.svg?branch=master)](https://travis-ci.org/atsid/schematic-js)
 [![Dependency Status](https://david-dm.org/atsid/schematic-js.svg)](https://david-dm.org/atsid/schematic-js)
+[![Dev Dependency Status](https://david-dm.org/atsid/schematic-js/dev-status.svg)](https://david-dm.org/atsid/schematic-js)
 
 #schematic-js
 An ES5 JSON-schema-based model support library.
